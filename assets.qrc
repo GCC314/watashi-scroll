@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/block">
+        <file>assets/dirt.png</file>
+    </qresource>
+    <qresource prefix="/bloc">
+        <file>assets/gee.png</file>
+    </qresource>
+</RCC>
