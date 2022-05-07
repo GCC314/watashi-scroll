@@ -18,10 +18,13 @@ class GameWidget : public QWidget
 public:
     GameWidget(QWidget *parent = nullptr);
     ~GameWidget();
+
+    void __Run();
+
 private:
     QGraphicsScene *scene;
     QGraphicsView *view;
     Ui::GameWidget *ui;
-
+    Scene *mapscene;
 };
 #endif // GAMEWIDGET_H

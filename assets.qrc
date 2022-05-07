@@ -1,8 +1,9 @@
 <RCC>
     <qresource prefix="/block">
         <file>assets/dirt.png</file>
+        <file>assets/blank.png</file>
     </qresource>
-    <qresource prefix="/bloc">
+    <qresource prefix="/hero">
         <file>assets/gee.png</file>
     </qresource>
 </RCC>

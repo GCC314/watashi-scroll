@@ -21,7 +21,8 @@ public:
     void Wakeup();
 private:
     Map_BLinfo **map;
-    QVector<Entity> charas;
+    Block **qtbmap;
+    //QVector<Entity> charas;
     QGraphicsScene *qtscene;
 };
 
