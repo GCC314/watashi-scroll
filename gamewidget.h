@@ -5,7 +5,9 @@
 #include "scene.h"
 #include <QGraphicsScene>
 #include <QGraphicsView>
+#include <QKeyEvent>
 #include "config.h"
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class GameWidget; }
@@ -22,9 +24,11 @@ public:
     void __Run();
 
 private:
-    QGraphicsScene *scene;
+    MapScene *scene;
     QGraphicsView *view;
     Ui::GameWidget *ui;
-    Scene *mapscene;
+protected:
+    void keyPressEvent(QKeyEvent *event);
+    void keyReleaseEvent(QKeyEvent *event);
 };
 #endif // GAMEWIDGET_H

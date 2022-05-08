@@ -4,28 +4,33 @@
 #include "config.h"
 #include <QGraphicsItem>
 
-const int BLOCKS_TYPE_NUM = 2;
-const int BLOCK_ID_BLANK = 0;
-const int BLOCK_ID_DIRT = 1;
-const QString BLOCK_ID_NAME[BLOCKS_TYPE_NUM] = {
-    "blank",
-    "dirt"
-};
-inline QString btexture_path(const int &t){
-    return QString(":/block/assets/") + BLOCK_ID_NAME[t] + QString(".png");
-}
-extern QImage *BLOCKS_IMAGE_CACHE[BLOCKS_TYPE_NUM];
-inline QImage& block_image_cache(const int &t){
-    if(BLOCKS_IMAGE_CACHE[t] == nullptr){
-        BLOCKS_IMAGE_CACHE[t] = new QImage(btexture_path(t));
+namespace BLOCKS{
+    const int TYPE_NUM = 2;
+    const int ID_BLANK = 0;
+    const int ID_DIRT = 1;
+    const QString ID_NAME[TYPE_NUM] = {
+        "blank",
+        "dirt"
+    };
+
+    inline QString txtpath(const int &t){
+        return QString(":/block/assets/") + ID_NAME[t] + QString(".png");
     }
-    return *(BLOCKS_IMAGE_CACHE[t]);
+    extern QImage *IMAGE_CACHE[TYPE_NUM];
+    inline QImage& getImgcache(const int &t){
+        if(IMAGE_CACHE[t] == nullptr){
+            IMAGE_CACHE[t] = new QImage(txtpath(t));
+        }
+        return *(IMAGE_CACHE[t]);
+    }
 }
+
+
 
 class Block : public QGraphicsPixmapItem
 {
 public:
-    Block():type(-1){}
+    Block():type(-1){QGraphicsPixmapItem::setZValue(15.0);}
     inline int getType(){
         return type;
     }
@@ -34,7 +39,7 @@ public:
     }
     inline bool toggleBlock(const int &t){
         if(type == t) return false;
-        this->setPixmap(QPixmap::fromImage(block_image_cache(t)));
+        this->setPixmap(QPixmap::fromImage(BLOCKS::getImgcache(t)));
         return true;
     }
 private:

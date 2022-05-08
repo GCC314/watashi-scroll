@@ -4,6 +4,6 @@
         <file>assets/blank.png</file>
     </qresource>
     <qresource prefix="/hero">
-        <file>assets/gee.png</file>
+        <file>assets/god.png</file>
     </qresource>
 </RCC>
