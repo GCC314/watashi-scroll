@@ -8,29 +8,30 @@
 #include <QGraphicsScene>
 #include <QGraphicsView>
 #include <QTimer>
-
-typedef struct __map_block_info{
-    int type;
-} Map_BLinfo;
-
-typedef struct __map_entity_info{
-    int x,y,type;
-} Map_ENinfo;
+#include <QJsonDocument>
+#include <QJsonArray>
+#include <QJsonObject>
+#include <QJsonValue>
 
 class MapScene : public QGraphicsScene
 {
 public:
-    MapScene();
+    MapScene(QWidget *parent);
     ~MapScene();
     void Load(int level);
-    void Wakeup();
+    void Start();
+    void Pause();
+    void Clear();
+    void Refresh();
     Entity* getWatashi(){return Watashi;}
 private:
-    Map_BLinfo **map;
-    Block **qtbmap;
+    QVector<Block*> qtbmap;
     QVector<Entity*> charas;
     Entity *Watashi;
     QTimer *tick;
+    QWidget *parent;
+    QGraphicsView *view;
+    QJsonObject LevelInfo;
 };
 
 #endif // SCENE_H

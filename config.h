@@ -1,26 +1,35 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
-//#include <QDebug>
+#include <QDebug>
+#include <QFile>
+#include <QTextStream>
 
 const int SCREEN_X_WIDTH = 640;
 const int SCREEN_Y_WIDTH = 480;
-const int BLOCK_SIZE = 16;
-const int X_NUM = SCREEN_X_WIDTH / BLOCK_SIZE;
-const int Y_NUM = SCREEN_Y_WIDTH / BLOCK_SIZE;
-const int GOD_SPEED = 2;
 
 #include <QString>
 using namespace std;
 
+const QString TEXTURE_PATH_PREFIX = "/home/gcc314/dev/cxsj/watashi-scroll/texture/";
+const QString ATTR_PATH_PREFIX = "/home/gcc314/dev/cxsj/watashi-scroll/attr/";
+
 const QString MAP_DATA_PATH_PREFIX = "/home/gcc314/dev/cxsj/watashi-scroll/map/level-";
-inline QString mapdata_path(int level){
+inline QString data_path(int level){
     QString levelStr;
-    return MAP_DATA_PATH_PREFIX + levelStr.setNum(level);
+    return MAP_DATA_PATH_PREFIX + levelStr.setNum(level) + "/";
 }
 inline QString entitydata_path(int level){
-    QString levelStr;
-    return MAP_DATA_PATH_PREFIX + levelStr.setNum(level) + "-entity";
+    return data_path(level) + "entity.json";
+}
+inline QString blockdata_path(int level){
+    return data_path(level) + "block.json";
+}
+inline QString infodata_path(int level){
+    return data_path(level) + "info.json";
+}
+inline QString bgimg_path(int level){
+    return data_path(level) + "bgimg.png";
 }
 
 #endif // CONFIG_H

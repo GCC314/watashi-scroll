@@ -2,71 +2,114 @@
 #include <QFile>
 
 
-
-MapScene::MapScene()
+MapScene::MapScene(QWidget *parent)
 {
-    map = new Map_BLinfo *[X_NUM];
-    qtbmap = new Block *[X_NUM];
-    for(int x = 0;x < X_NUM;x++){
-        map[x] = new Map_BLinfo [Y_NUM];
-        qtbmap[x] = new Block [Y_NUM];
-    }
-    for(int x = 0;x < X_NUM;x++){
-        for(int y = 0;y < Y_NUM;y++){
-            qtbmap[x][y].setPos(x * BLOCK_SIZE,y * BLOCK_SIZE);
-            addItem(&qtbmap[x][y]);
-        }
-    }
+    this->parent = parent;
 }
 
 MapScene::~MapScene(){
-    for(int x = 0;x < X_NUM;x++){
-        free(map[x]);
-    }
-    free(map);
+    MapScene::Clear();
 }
 
 void MapScene::Load(int level){
-    QString filename = mapdata_path(level);
-    QFile mapfile(filename);
-    mapfile.open(QIODevice::ReadOnly);
-    for(int x = 0;x < X_NUM;x++){
-        mapfile.read((char*)(map[x]),sizeof(Map_BLinfo) * Y_NUM);
+    view = new QGraphicsView(parent);
+    view->setScene(this);
+    view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    view->resize(SCREEN_X_WIDTH,SCREEN_Y_WIDTH);
+
+    QImage *bgImg = new QImage(bgimg_path(level));
+    QGraphicsPixmapItem *bgitem = new QGraphicsPixmapItem();
+    bgitem->setZValue(1.0);
+    bgitem->setPos(0,0);
+    bgitem->setPixmap(QPixmap::fromImage(*bgImg));
+    this->addItem(bgitem);
+
+    QFile jFile;
+    // Load Info
+    jFile.setFileName(infodata_path(level));
+    jFile.open(QIODevice::ReadOnly);
+    QTextStream *istream;
+    istream = new QTextStream(&jFile);
+    QString jsonStr;
+    jsonStr = istream->readAll();
+    QJsonDocument jDoc = QJsonDocument::fromJson(jsonStr.toLocal8Bit().data());
+    LevelInfo = jDoc.object();
+    [&](){
+        // Deal With Level Info
+    }();
+    delete istream;
+    jFile.close();
+
+    // Load Block
+    jFile.setFileName(blockdata_path(level));
+    jFile.open(QIODevice::ReadOnly);
+    istream = new QTextStream(&jFile);
+    jsonStr = istream->readAll();
+    jDoc = QJsonDocument::fromJson(jsonStr.toLocal8Bit().data());
+    QJsonArray bList = jDoc.array();
+    for(auto val : bList){
+        qDebug().noquote() << QJsonDocument(val.toObject()).toJson();
+        Block *blo = new Block(val.toObject());
+        this->addItem(blo);
     }
-    mapfile.close();
-    for(int x = 0;x < X_NUM;x++){
-        for(int y = 0;y < Y_NUM;y++){
-            qtbmap[x][y].toggleBlock(map[x][y].type);
+    delete istream;
+    jFile.close();
+
+    // Load Entity
+    jFile.setFileName(entitydata_path(level));
+    jFile.open(QIODevice::ReadOnly);
+    istream = new QTextStream(&jFile);
+    jsonStr = istream->readAll();
+    jDoc = QJsonDocument::fromJson(jsonStr.toLocal8Bit().data());
+    QJsonArray eList = jDoc.array();
+    for(auto val : eList){
+        qDebug().noquote() << QJsonDocument(val.toObject()).toJson();
+        Entity *ett = new Entity(val.toObject());
+        this->addItem(ett);
+        qDebug(ett->getType().toStdString().c_str());
+        if(ett->getType() == "watashi"){
+            this->Watashi = ett;
+            view->centerOn(Watashi);
         }
     }
-    filename = entitydata_path(level);
-    QFile entityfile(filename);
-    entityfile.open(QIODevice::ReadOnly);
-    Map_ENinfo head;
-    entityfile.read((char*)(&head),sizeof(Map_ENinfo));
-    qDebug("%d\n",head.x);
-    for(int i = 0;i < head.x;i++){
-        Map_ENinfo now;
-        entityfile.read((char*)(&now),sizeof(Map_ENinfo));
-        qDebug("entity %d at %d %d\n",now.x,now.y,now.type);
-        Entity *ne = new Entity(now.x,now.y,now.type);
-        if(now.type == ENTITYS::ID_GOD){
-            Watashi = ne;
-        }
-        charas.push_back(ne);
-        addItem(ne);
-    }
-    entityfile.close();
+    delete istream;
+    jFile.close();
+
+    view->show();
+
+    if(Watashi == nullptr) qDebug("Watashi mo nai");
+
     tick = new QTimer();
     connect(tick,&QTimer::timeout,[&](){
-        //TODO : Triggered every 0.1s,deal with routine work;
         qDebug("Time elapsed");
-        Watashi->setPos(Watashi->x() + Watashi->getSpeedX(),Watashi->y() + Watashi->getSpeedY());
+        Refresh();
     });
 }
 
-void MapScene::Wakeup(){
+void MapScene::Start(){
     if(!tick->isActive()){
         tick->start(100);
     }
+}
+
+void MapScene::Pause(){
+    if(tick->isActive()){
+        tick->stop();
+    }
+}
+
+void MapScene::Clear(){
+    delete view;
+    this->clear();
+    charas.clear();
+    qtbmap.clear();
+    Watashi = nullptr;
+    view = nullptr;
+}
+
+void MapScene::Refresh(){
+    // TEST : ONLY TO MOVE
+    Watashi->setPos(Watashi->x() + Watashi->getSpeedX(),Watashi->y() + Watashi->getSpeedY());
+    view->centerOn(Watashi);
 }

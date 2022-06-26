@@ -3,26 +3,24 @@
 
 #include "config.h"
 #include <QGraphicsItem>
+#include <QMap>
+#include <QJsonDocument>
+#include <QJsonArray>
+#include <QJsonObject>
+#include <QJsonValue>
 
 namespace BLOCKS{
-    const int TYPE_NUM = 2;
-    const int ID_BLANK = 0;
-    const int ID_DIRT = 1;
-    const QString ID_NAME[TYPE_NUM] = {
-        "blank",
-        "dirt"
-    };
-
-    inline QString txtpath(const int &t){
-        return QString(":/block/assets/") + ID_NAME[t] + QString(".png");
+    extern QHash<QString,QImage*> IMAGE_CACHE;
+    inline QString txtpath(const QString &t){
+        return TEXTURE_PATH_PREFIX + "block/" + t + QString(".png");
     }
-    extern QImage *IMAGE_CACHE[TYPE_NUM];
-    inline QImage& getImgcache(const int &t){
-        if(IMAGE_CACHE[t] == nullptr){
+    inline QImage& getImgcache(const QString &t){
+        if(!IMAGE_CACHE.contains(t)){
             IMAGE_CACHE[t] = new QImage(txtpath(t));
         }
         return *(IMAGE_CACHE[t]);
     }
+    void init();
 }
 
 
@@ -30,20 +28,11 @@ namespace BLOCKS{
 class Block : public QGraphicsPixmapItem
 {
 public:
-    Block():type(-1){QGraphicsPixmapItem::setZValue(15.0);}
-    inline int getType(){
-        return type;
-    }
-    inline void setType(const int &x){
-        type = x;
-    }
-    inline bool toggleBlock(const int &t){
-        if(type == t) return false;
-        this->setPixmap(QPixmap::fromImage(BLOCKS::getImgcache(t)));
-        return true;
-    }
+    Block(const QString &type);
+    Block(const QString &type,int x,int y);
+    Block(const QJsonObject &obj);
 private:
-    int type;
+    QString type;
 };
 
 #endif // BLOCK_H

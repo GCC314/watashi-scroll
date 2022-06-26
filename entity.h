@@ -2,45 +2,43 @@
 #define ENTITY_H
 
 #include "config.h"
+#include <QMap>
 #include <QGraphicsItem>
+#include <QJsonDocument>
+#include <QJsonArray>
+#include <QJsonObject>
+#include <QJsonValue>
 
 namespace ENTITYS{
-    const int TYPE_NUM = 1;
-    const int ID_GOD = 0;
-    const QString ID_NAME[TYPE_NUM] = {
-        "god"
-    };
-
-    inline QString txtpath(const int &t){
-        return QString(":/hero/assets/") + ID_NAME[t] + QString(".png");
+    extern QHash<QString,QImage*> IMAGE_CACHE;
+    extern QHash<QString,bool> ENTITY_ISFLOAT;
+    inline QString txtpath(const QString &t){
+        return TEXTURE_PATH_PREFIX + "entity/" + t + QString(".png");
     }
-    extern QImage *IMAGE_CACHE[TYPE_NUM];
-    inline QImage& getImgcache(const int &t){
-        if(IMAGE_CACHE[t] == nullptr){
+    inline QImage& getImgcache(const QString &t){
+        if(!IMAGE_CACHE.contains(t)){
             IMAGE_CACHE[t] = new QImage(txtpath(t));
         }
         return *(IMAGE_CACHE[t]);
     }
-    inline int getImgX(const int &t){
-        if(IMAGE_CACHE[t] == nullptr){
-            IMAGE_CACHE[t] = new QImage(txtpath(t));
-        }
-        return IMAGE_CACHE[t]->width();
+    inline int getImgX(const QString &t){
+        return getImgcache(t).width();
     }
-    inline int getImgY(const int &t){
-        if(IMAGE_CACHE[t] == nullptr){
-            IMAGE_CACHE[t] = new QImage(txtpath(t));
-        }
-        return IMAGE_CACHE[t]->height();
+    inline int getImgY(const QString &t){
+        return getImgcache(t).height();
     }
+    inline bool getEttFloat(const QString &t){
+        return ENTITY_ISFLOAT[t];
+    }
+    void init();
 }
 
 class Entity : public QGraphicsPixmapItem
 {
 public:
-    Entity(int type = -1);
-    Entity(int x,int y,int type);
-    Entity(int x,int y,int type,int sx,int sy);
+    Entity(const QString& type);
+    Entity(int x,int y,const QString& type);
+    Entity(const QJsonObject& obj);
     inline int getSpeedX(){
         return acSpeed_x;
     }
@@ -53,9 +51,16 @@ public:
     inline void shiftSpeedY(int delta){
         acSpeed_y += delta;
     }
+    inline bool getFloat(){
+        return isFloat;
+    }
+    inline QString getType(){
+        return type;
+    }
 private:
-    int type;
+    QString type;
     int acSpeed_x,acSpeed_y;
+    bool isFloat;
 };
 
 class Player : public Entity{
@@ -66,7 +71,15 @@ class Npc : public Entity{
     //
 };
 
-class Barrier : public Entity{
+class Item : public Entity{
+    //
+};
+
+class Notice : public Entity{
+    //
+};
+
+class Gate : public Entity{
     //
 };
 
