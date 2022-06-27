@@ -3,5 +3,17 @@
 		"x" : 200,
 		"y" : 650,
 		"type" : "watashi"
+	},
+	{
+		"x" : 220,
+		"y" : 640,
+		"type" : "notice",
+		"moji" : "Hello to this world!"
+	},
+	{
+		"x" : 270,
+		"y" : 485,
+		"type" : "notice",
+		"moji" : "Climb to a higher peak!"
 	}
 ]

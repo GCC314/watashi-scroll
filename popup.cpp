@@ -13,8 +13,11 @@ Moji::Moji(QString moji,QGraphicsView *view):Popup(30,330,view){
     QGraphicsPixmapItem::setZValue(50.0);
     QGraphicsPixmapItem::setPixmap(QPixmap::fromImage(POPUP::getImgcache("moji")));
     qmoji = new QGraphicsSimpleTextItem(moji,this);
+    QFont tf;
+    tf.setPixelSize(20);
+    tf.setFamily("Fira Code");
     qmoji->setBrush(Qt::white);
-    qDebug("%f %f\n",this->x() + 10,this->y() + 10);
+    qmoji->setFont(tf);
     qmoji->setPos(10,10);
 }
 
@@ -25,6 +28,10 @@ void Moji::show(QGraphicsScene *scene){
 void Moji::clear(QGraphicsScene *scene){
     scene->removeItem(this);
     delete qmoji;
+}
+
+void POPUP::init(){
+    //
 }
 
 //

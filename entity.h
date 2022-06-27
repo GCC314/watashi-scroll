@@ -2,6 +2,7 @@
 #define ENTITY_H
 
 #include "config.h"
+#include "block.h"
 #include <QMap>
 #include <QGraphicsItem>
 #include <QJsonDocument>
@@ -42,28 +43,54 @@ public:
     Entity(const QString& type);
     Entity(int x,int y,const QString& type);
     Entity(const QJsonObject& obj);
-    inline int getSpeedX(){
-        return acSpeed_x;
-    }
-    inline int getSpeedY(){
-        return acSpeed_y;
-    }
-    inline void shiftSpeedX(int delta){
-        acSpeed_x += delta;
-    }
-    inline void shiftSpeedY(int delta){
-        acSpeed_y += delta;
-    }
     inline bool getFloat(){
         return isFloat;
     }
     inline QString getType(){
         return type;
     }
+    inline int getISpeedX(){
+        return intendSpeed_x;
+    }
+    inline int getISpeedY(){
+        return intendSpeed_y;
+    }
+    inline void shiftISpeedX(int delta){
+        intendSpeed_x += delta;
+    }
+    inline void shiftISpeedY(int delta){
+        intendSpeed_y += delta;
+    }
+    inline void shiftSpeedY(int delta){
+        Speed_y += delta;
+    }
+    inline void shiftSpeedX(int delta){
+        Speed_x += delta;
+    }
     static Entity* newEntity(const QJsonObject& obj);
+    inline void setSpeedY(int v){
+        Speed_y = v;
+    }
+    inline void setSpeedX(int v){
+        Speed_x = v;
+    }
+    inline int getSpeedY(){
+        return Speed_y;
+    }
+    inline int getSpeedX(){
+        return Speed_x;
+    }
+    inline void setAcY(int a){
+        acAc_y = a;
+    }
+    inline int getAcY(){
+        return acAc_y;
+    }
 private:
     QString type;
-    int acSpeed_x,acSpeed_y;
+    int intendSpeed_x,intendSpeed_y;
+    int Speed_x,Speed_y;
+    int acAc_y;
     bool isFloat;
 };
 
@@ -85,6 +112,9 @@ public:
 class Notice : public Entity{
 public:
     Notice(const QJsonObject& obj);
+    QString getMoji();
+private:
+    QString moji;
 };
 
 class Gate : public Entity{

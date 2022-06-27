@@ -11,6 +11,11 @@ const int SCREEN_Y_WIDTH = 480;
 #include <QString>
 using namespace std;
 
+const int G = 1;
+const int xspeed = 5;
+const int yspeed = 15;
+const int INTERVAL = 50;
+
 const QString TEXTURE_PATH_PREFIX = "/home/gcc314/dev/cxsj/watashi-scroll/texture/";
 const QString ATTR_PATH_PREFIX = "/home/gcc314/dev/cxsj/watashi-scroll/attr/";
 

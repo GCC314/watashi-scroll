@@ -5,6 +5,7 @@
 MapScene::MapScene(QWidget *parent)
 {
     this->parent = parent;
+    moji = nullptr;
 }
 
 MapScene::~MapScene(){
@@ -52,6 +53,7 @@ void MapScene::Load(int level){
         qDebug().noquote() << QJsonDocument(val.toObject()).toJson();
         Block *blo = new Block(val.toObject());
         this->addItem(blo);
+        qtbmap.append(blo);
     }
     delete istream;
     jFile.close();
@@ -65,8 +67,9 @@ void MapScene::Load(int level){
     QJsonArray eList = jDoc.array();
     for(auto val : eList){
         qDebug().noquote() << QJsonDocument(val.toObject()).toJson();
-        Entity *ett = new Entity(val.toObject());
+        Entity *ett = Entity::newEntity(val.toObject());
         this->addItem(ett);
+        charas.append(ett);
         qDebug(ett->getType().toStdString().c_str());
         if(ett->getType() == "watashi"){
             this->Watashi = ett;
@@ -89,7 +92,7 @@ void MapScene::Load(int level){
 
 void MapScene::Start(){
     if(!tick->isActive()){
-        tick->start(100);
+        tick->start(INTERVAL);
     }
 }
 
@@ -108,10 +111,19 @@ void MapScene::Clear(){
     view = nullptr;
 }
 
-void MapScene::ShowDialog(const QString& msg){
+void MapScene::ShowDialog(){
     if(moji != nullptr) return;
+    Notice *ntc = nullptr;
+    for(auto ett : charas){
+        qDebug("%s\n",ett->getType().toStdString().c_str());
+        if(ett->getType() == "notice" && Watashi->collidesWithItem(ett)){
+            ntc = (Notice*)ett;
+            break;
+        }
+    }
+    if(ntc == nullptr) return;
     Pause();
-    moji = new Moji(msg,view);
+    moji = new Moji(ntc->getMoji(),view);\
     moji->show(this);
 }
 
@@ -124,8 +136,59 @@ void MapScene::UnshowDialog(){
 }
 
 void MapScene::Refresh(){
-    // TEST : ONLY TO MOVE
-    //
-    Watashi->setPos(Watashi->x() + Watashi->getSpeedX(),Watashi->y() + Watashi->getSpeedY());
+    int ground = LevelInfo["ground"].toInt();
+    for(auto ett : charas){
+        if(ENTITYS::getEttFloat(ett->getType())) continue;
+
+        ett->setSpeedX(ett->getISpeedX());
+        //Y axis move
+        int ht = ENTITYS::getImgY(ett->getType());
+        int y0 = ett->y();
+        QGraphicsLineItem bot(ett->x(),y0,ett->x() + ENTITYS::getImgX(ett->getType()),y0);
+
+        [&](){
+            // Deal with Y Axis (Using Lambda function to make it clear?)
+
+            // 1. on the floor OR block
+            bool ff = false;
+            if(y0 >= ground) ff = true;
+            else for(auto blo : qtbmap){
+                if(bot.collidesWithItem(blo,Qt::IntersectsItemShape)){
+                    ff = true;
+                    break;
+                }
+            }
+            if(ff){
+                if(ett->getSpeedY() > 0) ett->setSpeedY(0);
+                else ett->setSpeedY(min(ett->getISpeedY(),0));
+//                qDebug("{floor}");
+                return;
+            }
+            // 2. free but track intersects with floor OR block
+            y0 += ett->getSpeedY();
+            bot.setX(bot.x() + ett->getSpeedX());
+            bot.setY(bot.y() + ett->getSpeedY());
+            if(y0 >= ground){
+                ett->setY(ground);
+                ett->setSpeedY(0);
+//                qDebug("{inter}");
+                return;
+            }else if(ett->getSpeedY() >= 0) for(auto blo : qtbmap){
+                if(bot.collidesWithItem(blo,Qt::IntersectsItemShape)){
+                    ett->setY(blo->y());
+                    ett->setSpeedY(0);
+//                    qDebug("{inter}");
+                    return;
+                }
+            }
+//            qDebug("{free}");
+            // 3. free
+            ett->shiftSpeedY(G);
+
+        }();
+//        qDebug("Speed %d %d | %f %f",ett->getSpeedX(),ett->getSpeedY(),ett->x(),ett->y());
+        ett->setX(ett->x() + ett->getSpeedX());
+        ett->setY(ett->y() + ett->getSpeedY());
+    }
     view->centerOn(Watashi);
 }

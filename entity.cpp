@@ -15,7 +15,9 @@ Entity::Entity(int x,int y,const QString& type){
     QGraphicsPixmapItem::setPixmap(QPixmap::fromImage(ENTITYS::getImgcache(type)));
     QGraphicsPixmapItem::setOffset(-ENTITYS::getImgX(type),-ENTITYS::getImgY(type));
     isFloat = ENTITYS::getEttFloat(type);
-    acSpeed_x = acSpeed_y = 0;
+    intendSpeed_x = intendSpeed_y = 0;
+    Speed_x = Speed_y = 0;
+    acAc_y = 0;
 }
 
 Entity::Entity(const QJsonObject &obj){
@@ -29,7 +31,9 @@ Entity::Entity(const QJsonObject &obj){
     QGraphicsPixmapItem::setPixmap(QPixmap::fromImage(ENTITYS::getImgcache(type)));
     QGraphicsPixmapItem::setOffset(-ENTITYS::getImgX(type),-ENTITYS::getImgY(type));
     isFloat = ENTITYS::getEttFloat(type);
-    acSpeed_x = acSpeed_y = 0;
+    intendSpeed_x = intendSpeed_y = 0;
+    Speed_x = Speed_y = 0;
+    acAc_y = 0;
 }
 
 void ENTITYS::init(){
@@ -59,8 +63,11 @@ Item::Item(const QJsonObject &obj):Entity(obj){
 }
 
 Notice::Notice(const QJsonObject &obj):Entity(obj){
-    //
+    this->moji = obj["moji"].toString();
+    this->setZValue(12.0);
 }
+
+QString Notice::getMoji(){return this->moji;}
 
 Gate::Gate(const QJsonObject &obj):Entity(obj){
     //
@@ -79,6 +86,9 @@ Entity* Entity::newEntity(const QJsonObject& obj){
     }
     if(obj["type"].toString() == "gate"){
         return new Gate(obj);
+    }
+    if(obj["type"].toString() == "notice"){
+        return new Notice(obj);
     }
     return new Entity(obj);
 }

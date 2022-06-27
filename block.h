@@ -20,6 +20,12 @@ namespace BLOCKS{
         }
         return *(IMAGE_CACHE[t]);
     }
+    inline int getImgX(const QString &t){
+        return getImgcache(t).width();
+    }
+    inline int getImgY(const QString &t){
+        return getImgcache(t).height();
+    }
     void init();
 }
 

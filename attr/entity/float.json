@@ -1,3 +1,6 @@
 {
-    "watashi":false
+    "watashi":false,
+    "gate":true,
+    "notice":true,
+    "item":false
 }
