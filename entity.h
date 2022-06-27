@@ -15,7 +15,10 @@ namespace ENTITYS{
     inline QString txtpath(const QString &t){
         return TEXTURE_PATH_PREFIX + "entity/" + t + QString(".png");
     }
-    inline QImage& getImgcache(const QString &t){
+    inline QImage& getImgcache(QString t,QString status=""){
+        if(status != ""){
+            t += "-" + status;
+        }
         if(!IMAGE_CACHE.contains(t)){
             IMAGE_CACHE[t] = new QImage(txtpath(t));
         }
@@ -57,6 +60,7 @@ public:
     inline QString getType(){
         return type;
     }
+    static Entity* newEntity(const QJsonObject& obj);
 private:
     QString type;
     int acSpeed_x,acSpeed_y;
@@ -64,23 +68,28 @@ private:
 };
 
 class Player : public Entity{
-    //
+public:
+    Player(const QJsonObject& obj);
 };
 
 class Npc : public Entity{
-    //
+public:
+    Npc(const QJsonObject& obj);
 };
 
 class Item : public Entity{
-    //
+public:
+    Item(const QJsonObject& obj);
 };
 
 class Notice : public Entity{
-    //
+public:
+    Notice(const QJsonObject& obj);
 };
 
 class Gate : public Entity{
-    //
+public:
+    Gate(const QJsonObject& obj);
 };
 
 #endif // ENTITY_H

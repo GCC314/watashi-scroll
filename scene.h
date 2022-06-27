@@ -4,6 +4,7 @@
 #include "block.h"
 #include "entity.h"
 #include "config.h"
+#include "popup.h"
 #include <QVector>
 #include <QGraphicsScene>
 #include <QGraphicsView>
@@ -23,6 +24,8 @@ public:
     void Pause();
     void Clear();
     void Refresh();
+    void ShowDialog(const QString& msg);
+    void UnshowDialog();
     Entity* getWatashi(){return Watashi;}
 private:
     QVector<Block*> qtbmap;
@@ -32,6 +35,7 @@ private:
     QWidget *parent;
     QGraphicsView *view;
     QJsonObject LevelInfo;
+    Moji *moji;
 };
 
 #endif // SCENE_H

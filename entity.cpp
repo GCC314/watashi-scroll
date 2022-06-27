@@ -45,3 +45,40 @@ void ENTITYS::init(){
     }
     cfgFile.close();
 }
+
+Player::Player(const QJsonObject &obj):Entity(obj){
+    //
+}
+
+Npc::Npc(const QJsonObject &obj):Entity(obj){
+    //
+}
+
+Item::Item(const QJsonObject &obj):Entity(obj){
+    //
+}
+
+Notice::Notice(const QJsonObject &obj):Entity(obj){
+    //
+}
+
+Gate::Gate(const QJsonObject &obj):Entity(obj){
+    //
+}
+
+
+Entity* Entity::newEntity(const QJsonObject& obj){
+    if(obj["type"].toString() == "watashi"){
+        return new Player(obj);
+    }
+    if(obj["type"].toString() == "npc"){
+        return new Npc(obj);
+    }
+    if(obj["type"].toString() == "item"){
+        return new Item(obj);
+    }
+    if(obj["type"].toString() == "gate"){
+        return new Gate(obj);
+    }
+    return new Entity(obj);
+}

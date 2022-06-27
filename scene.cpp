@@ -82,7 +82,7 @@ void MapScene::Load(int level){
 
     tick = new QTimer();
     connect(tick,&QTimer::timeout,[&](){
-        qDebug("Time elapsed");
+//        qDebug("Time elapsed");
         Refresh();
     });
 }
@@ -108,8 +108,24 @@ void MapScene::Clear(){
     view = nullptr;
 }
 
+void MapScene::ShowDialog(const QString& msg){
+    if(moji != nullptr) return;
+    Pause();
+    moji = new Moji(msg,view);
+    moji->show(this);
+}
+
+void MapScene::UnshowDialog(){
+    if(moji == nullptr) return;
+    moji->clear(this);
+    delete moji;
+    moji = nullptr;
+    Start();
+}
+
 void MapScene::Refresh(){
     // TEST : ONLY TO MOVE
+    //
     Watashi->setPos(Watashi->x() + Watashi->getSpeedX(),Watashi->y() + Watashi->getSpeedY());
     view->centerOn(Watashi);
 }

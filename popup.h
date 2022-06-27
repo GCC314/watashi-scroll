@@ -3,27 +3,39 @@
 
 #include "config.h"
 #include <QGraphicsItem>
+#include <QGraphicsScene>
+#include <QGraphicsView>
 
 namespace POPUP{
-    //
+    extern QHash<QString,QImage*> IMAGE_CACHE;
+    inline QString txtpath(const QString &t){
+        return TEXTURE_PATH_PREFIX + "popup/" + t + QString(".png");
+    }
+    inline QImage& getImgcache(const QString &t){
+        if(!IMAGE_CACHE.contains(t)){
+            IMAGE_CACHE[t] = new QImage(txtpath(t));
+        }
+        return *(IMAGE_CACHE[t]);
+    }
+    void init();
 }
 
 class Popup : public QGraphicsPixmapItem
 {
 public:
-    Popup(int type = -1);
-    Popup(int x,int y,int type);
-    Popup(int x,int y,int type,int sx,int sy);
+    Popup(int x,int y,QGraphicsView *view);
 private:
     int type;
 };
 
 class Moji : public Popup{
 public:
-    Moji();
-    Moji(QString moji);
+    Moji(QString moji,QGraphicsView *view);
+    void show(QGraphicsScene *scene);
+    void clear(QGraphicsScene *scene);
 private:
     QString moji;
+    QGraphicsSimpleTextItem *qmoji;
 };
 
 #endif // POPUP_H
