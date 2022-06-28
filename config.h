@@ -16,10 +16,11 @@ const int xspeed = 5;
 const int yspeed = 15;
 const int INTERVAL = 50;
 
-const QString TEXTURE_PATH_PREFIX = "/home/gcc314/dev/cxsj/watashi-scroll/texture/";
-const QString ATTR_PATH_PREFIX = "/home/gcc314/dev/cxsj/watashi-scroll/attr/";
+const QString ROOT_PREFIX = "/home/gcc314/dev/cxsj/watashi-scroll/";
+const QString TEXTURE_PATH_PREFIX = ROOT_PREFIX + "texture/";
+const QString ATTR_PATH_PREFIX = ROOT_PREFIX + "attr/";
+const QString MAP_DATA_PATH_PREFIX = ROOT_PREFIX + "map/level-";
 
-const QString MAP_DATA_PATH_PREFIX = "/home/gcc314/dev/cxsj/watashi-scroll/map/level-";
 inline QString data_path(int level){
     QString levelStr;
     return MAP_DATA_PATH_PREFIX + levelStr.setNum(level) + "/";

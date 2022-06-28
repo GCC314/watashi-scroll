@@ -13,6 +13,7 @@ SOURCES += \
     entity.cpp \
     main.cpp \
     gamewidget.cpp \
+    musics.cpp \
     popup.cpp \
     scene.cpp
 
@@ -21,6 +22,7 @@ HEADERS += \
     config.h \
     entity.h \
     gamewidget.h \
+    musics.h \
     popup.h \
     scene.h
 
@@ -32,4 +34,7 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-RESOURCES +=
+RESOURCES += \
+    musics.qrc
+
+QT += multimedia

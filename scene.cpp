@@ -6,6 +6,10 @@ MapScene::MapScene(QWidget *parent)
 {
     this->parent = parent;
     moji = nullptr;
+    BGM = new QMediaPlayer;
+    BGM->setVolume(30);
+    Sounds = new QMediaPlayer;
+    Sounds->setVolume(30);
 }
 
 MapScene::~MapScene(){
@@ -86,6 +90,9 @@ void MapScene::Load(int level){
 
     if(Watashi == nullptr) qDebug("Watashi mo nai");
 
+    MUSICS::bgmSet(BGM,level);
+    BGM->play();
+
     tick = new QTimer();
     connect(tick,&QTimer::timeout,[&](){
 //        qDebug("Time elapsed");
@@ -113,6 +120,7 @@ void MapScene::Clear(){
     ItemList.clear();
     Watashi = nullptr;
     view = nullptr;
+    BGM->stop();
 }
 
 void MapScene::Teleport(int level){

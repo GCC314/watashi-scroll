@@ -14,6 +14,8 @@
 #include <QJsonObject>
 #include <QJsonValue>
 #include <cmath>
+#include <QtMultimedia/QMediaPlayer>
+#include "musics.h"
 
 class MapScene : public QGraphicsScene
 {
@@ -40,6 +42,8 @@ private:
     QJsonObject LevelInfo;
     QVector<Item*> ItemList;
     Moji *moji;
+    QMediaPlayer *BGM;
+    QMediaPlayer *Sounds;
 };
 
 #endif // SCENE_H
