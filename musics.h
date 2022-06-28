@@ -3,6 +3,7 @@
 
 #include "config.h"
 #include <QMediaPlayer>
+#include <QMediaPlaylist>
 #include <QGraphicsItem>
 #include <QMap>
 #include <QJsonDocument>
@@ -11,7 +12,7 @@
 #include <QJsonValue>
 
 namespace MUSICS{
-    void bgmSet(QMediaPlayer *player,int level);
+    void bgmSet(QMediaPlayer *player,QMediaPlaylist *plist,int level);
     void soundsSet(QMediaPlayer *player,QString sname);
 }
 

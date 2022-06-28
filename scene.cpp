@@ -7,9 +7,10 @@ MapScene::MapScene(QWidget *parent)
     this->parent = parent;
     moji = nullptr;
     BGM = new QMediaPlayer;
-    BGM->setVolume(30);
+    BGM->setVolume(20);
     Sounds = new QMediaPlayer;
-    Sounds->setVolume(30);
+    Sounds->setVolume(20);
+    bgmlist = nullptr;
 }
 
 MapScene::~MapScene(){
@@ -90,7 +91,8 @@ void MapScene::Load(int level){
 
     if(Watashi == nullptr) qDebug("Watashi mo nai");
 
-    MUSICS::bgmSet(BGM,level);
+    bgmlist = new QMediaPlaylist();
+    MUSICS::bgmSet(BGM,bgmlist,level);
     BGM->play();
 
     tick = new QTimer();
