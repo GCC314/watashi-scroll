@@ -75,6 +75,9 @@ void MapScene::Load(int level){
             this->Watashi = ett;
             view->centerOn(Watashi);
         }
+        if(ett->getType() == "item"){
+            ItemList.append((Item*)ett);
+        }
     }
     delete istream;
     jFile.close();
@@ -107,27 +110,19 @@ void MapScene::Clear(){
     this->clear();
     charas.clear();
     qtbmap.clear();
+    ItemList.clear();
     Watashi = nullptr;
     view = nullptr;
 }
 
-void MapScene::ShowDialog(){
-    if(moji != nullptr) return;
-    Notice *ntc = nullptr;
-    for(auto ett : charas){
-        qDebug("%s\n",ett->getType().toStdString().c_str());
-        if(ett->getType() == "notice" && Watashi->collidesWithItem(ett)){
-            ntc = (Notice*)ett;
-            break;
-        }
-    }
-    if(ntc == nullptr) return;
+void MapScene::Teleport(int level){
     Pause();
-    moji = new Moji(ntc->getMoji(),view);\
-    moji->show(this);
+    Clear();
+    Load(level);
+    Start();
 }
 
-void MapScene::UnshowDialog(){
+void MapScene::DoX(){
     if(moji == nullptr) return;
     moji->clear(this);
     delete moji;
@@ -135,16 +130,51 @@ void MapScene::UnshowDialog(){
     Start();
 }
 
+void MapScene::DoZ(){
+    auto ReadNotice = [&](Entity* ett){
+        if(moji != nullptr) return;
+        Pause();
+        moji = new Moji(((Notice*)ett)->getMoji(),view);
+        moji->show(this);
+    };
+    auto CrossGate = [&](Entity* ett){
+        Teleport(((Gate*)ett)->getTo());
+    };
+    for(auto ett : charas){
+        if(ett->getType() == "notice" && Watashi->collidesWithItem(ett)){
+            ReadNotice(ett);
+            return;
+        }
+        if(ett->getType() == "gate" && Watashi->collidesWithItem((ett))){
+            CrossGate(ett);
+            return;
+        }
+    }
+}
+
+void MapScene::Pickup(Item* it){
+    //Deal
+    qDebug("picked it up %s",it->getName().toStdString().c_str());
+    this->removeItem(it);
+}
+
 void MapScene::Refresh(){
     int ground = LevelInfo["ground"].toInt();
+    int xmin = LevelInfo["xmin"].toInt();
+    int xmax = LevelInfo["xmax"].toInt();
+    for(auto it = ItemList.begin();it != ItemList.end();){
+        if(Watashi->collidesWithItem(*it)){
+            Pickup(*it);
+            it = ItemList.erase(it);
+        }else it++;
+    }
     for(auto ett : charas){
         if(ENTITYS::getEttFloat(ett->getType())) continue;
 
         ett->setSpeedX(ett->getISpeedX());
         //Y axis move
-        int ht = ENTITYS::getImgY(ett->getType());
         int y0 = ett->y();
-        QGraphicsLineItem bot(ett->x(),y0,ett->x() + ENTITYS::getImgX(ett->getType()),y0);
+        QGraphicsLineItem bot(ett->x(),y0,ett->x() - ENTITYS::getImgX(ett->getType()),y0);
 
         [&](){
             // Deal with Y Axis (Using Lambda function to make it clear?)
@@ -186,8 +216,10 @@ void MapScene::Refresh(){
             ett->shiftSpeedY(G);
 
         }();
-//        qDebug("Speed %d %d | %f %f",ett->getSpeedX(),ett->getSpeedY(),ett->x(),ett->y());
-        ett->setX(ett->x() + ett->getSpeedX());
+        int tox = ett->x() + ett->getSpeedX();
+        tox = max(tox,xmin);
+        tox = min(tox,xmax);
+        ett->setX(tox);
         ett->setY(ett->y() + ett->getSpeedY());
     }
     view->centerOn(Watashi);

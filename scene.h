@@ -25,16 +25,11 @@ public:
     void Pause();
     void Clear();
     void Refresh();
-    void ShowDialog();
-    void UnshowDialog();
+    void DoZ();
+    void DoX();
+    void Teleport(int level);
+    void Pickup(Item* it);
     Entity* getWatashi(){return Watashi;}
-//    bool check();
-//    bool collide(Entity*, Block*);
-//    inline double dis(int x1, int y1, int x2, int y2){
-//        double re = sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) *(y1 - y2));
-//        return re;
-//    }
-//    QVector<Block*> blockVec;
 private:
     QVector<Block*> qtbmap;
     QVector<Entity*> charas;
@@ -43,6 +38,7 @@ private:
     QWidget *parent;
     QGraphicsView *view;
     QJsonObject LevelInfo;
+    QVector<Item*> ItemList;
     Moji *moji;
 };
 

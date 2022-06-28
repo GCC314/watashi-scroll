@@ -34,8 +34,6 @@ namespace BLOCKS{
 class Block : public QGraphicsPixmapItem
 {
 public:
-    Block(const QString &type);
-    Block(const QString &type,int x,int y);
     Block(const QJsonObject &obj);
 private:
     QString type;

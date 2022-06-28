@@ -38,10 +38,10 @@ void GameWidget::keyPressEvent(QKeyEvent *event){
             scene->getWatashi()->shiftISpeedY(WATASHI_SPEED);
             break;
         case Qt::Key_Z :
-            scene->ShowDialog();
+            scene->DoZ();
             break;
         case Qt::Key_X :
-            scene->UnshowDialog();
+            scene->DoX();
             break;
         case Qt::Key_Escape:
             //

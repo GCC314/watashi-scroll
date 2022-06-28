@@ -13,6 +13,8 @@
 namespace ENTITYS{
     extern QHash<QString,QImage*> IMAGE_CACHE;
     extern QHash<QString,bool> ENTITY_ISFLOAT;
+    extern QSet<QString> NPCS;
+    extern QSet<QString> ITEMS;
     inline QString txtpath(const QString &t){
         return TEXTURE_PATH_PREFIX + "entity/" + t + QString(".png");
     }
@@ -40,8 +42,6 @@ namespace ENTITYS{
 class Entity : public QGraphicsPixmapItem
 {
 public:
-    Entity(const QString& type);
-    Entity(int x,int y,const QString& type);
     Entity(const QJsonObject& obj);
     inline bool getFloat(){
         return isFloat;
@@ -86,7 +86,7 @@ public:
     inline int getAcY(){
         return acAc_y;
     }
-private:
+protected:
     QString type;
     int intendSpeed_x,intendSpeed_y;
     int Speed_x,Speed_y;
@@ -102,11 +102,17 @@ public:
 class Npc : public Entity{
 public:
     Npc(const QJsonObject& obj);
+    inline QString getName(){return name;}
+private:
+    QString name;
 };
 
 class Item : public Entity{
 public:
     Item(const QJsonObject& obj);
+    inline QString getName(){return name;}
+private:
+    QString name;
 };
 
 class Notice : public Entity{
@@ -120,6 +126,9 @@ private:
 class Gate : public Entity{
 public:
     Gate(const QJsonObject& obj);
+    inline int getTo(){return to;}
+private:
+    int to;
 };
 
 #endif // ENTITY_H

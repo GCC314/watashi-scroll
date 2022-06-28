@@ -8,7 +8,7 @@
 		"x" : 220,
 		"y" : 640,
 		"type" : "notice",
-		"moji" : "Hello to this world!"
+		"moji" : "Hello to this world 2!"
 	},
 	{
 		"x" : 270,
@@ -17,9 +17,9 @@
 		"moji" : "Climb to a higher peak!"
 	},
 	{
-        "x" : 300,
-        "y" : 488,
-        "type" : "gate",
-        "to" : 2
+        "x" : 600,
+        "y" : 640,
+        "type" : "item",
+        "name" : "healpotion"
 	}
 ]
