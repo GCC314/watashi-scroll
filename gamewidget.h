@@ -7,7 +7,7 @@
 #include <QGraphicsView>
 #include <QKeyEvent>
 #include "config.h"
-
+#include<QPushButton>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class GameWidget; }
@@ -27,6 +27,7 @@ private:
     MapScene *scene;
     QGraphicsView *view;
     Ui::GameWidget *ui;
+    QPushButton* b;
 protected:
     void keyPressEvent(QKeyEvent *event);
     void keyReleaseEvent(QKeyEvent *event);
