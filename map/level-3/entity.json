@@ -2,12 +2,21 @@
 	{
 		"x" : 200,
 		"y" : 650,
-		"type" : "watashi"
+		"type" : "watashi",
+		"hp" : 90
 	},
 	{
 		"x" : 300,
 		"y" : 650,
 		"type" : "npc",
-		"name" : "hapi"
+		"name" : "hapi",
+		"hp" : 70,
+		"heritage" :
+		{
+            "x" : 300,
+            "y" : 488,
+            "type" : "gate",
+            "to" : 2
+		}
 	}
 ]

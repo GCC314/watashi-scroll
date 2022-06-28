@@ -30,13 +30,14 @@ public:
     void Refresh();
     void DoZ();
     void DoX();
+    void giveDeath(Entity* ett);
     void Teleport(int level);
     void Pickup(Item* it);
     Entity* getWatashi(){return Watashi;}
 private:
     QVector<Block*> qtbmap;
     QVector<Entity*> charas;
-    Entity *Watashi;
+    Player *Watashi;
     QTimer *tick;
     QWidget *parent;
     QGraphicsView *view;
@@ -46,6 +47,8 @@ private:
     QMediaPlayer *BGM;
     QMediaPlayer *Sounds;
     QMediaPlaylist *bgmlist;
+    bool GG;
+    int nowlevel;
 };
 
 #endif // SCENE_H

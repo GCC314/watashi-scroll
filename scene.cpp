@@ -9,8 +9,9 @@ MapScene::MapScene(QWidget *parent)
     BGM = new QMediaPlayer;
     BGM->setVolume(20);
     Sounds = new QMediaPlayer;
-    Sounds->setVolume(20);
+    Sounds->setVolume(9);
     bgmlist = nullptr;
+    GG = false;
 }
 
 MapScene::~MapScene(){
@@ -23,6 +24,8 @@ void MapScene::Load(int level){
     view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     view->resize(SCREEN_X_WIDTH,SCREEN_Y_WIDTH);
+    GG = false;
+    nowlevel = level;
 
     QImage *bgImg = new QImage(bgimg_path(level));
     QGraphicsPixmapItem *bgitem = new QGraphicsPixmapItem();
@@ -77,7 +80,7 @@ void MapScene::Load(int level){
         charas.append(ett);
         qDebug(ett->getType().toStdString().c_str());
         if(ett->getType() == "watashi"){
-            this->Watashi = ett;
+            this->Watashi = (Player*)ett;
             view->centerOn(Watashi);
         }
         if(ett->getType() == "item"){
@@ -137,10 +140,13 @@ void MapScene::DoX(){
     moji->clear(this);
     delete moji;
     moji = nullptr;
-    Start();
+    if(GG){
+        Teleport(nowlevel);
+    }else Start();
 }
 
 void MapScene::DoZ(){
+    MUSICS::soundsPlay("biu");
     auto ReadNotice = [&](Entity* ett){
         if(moji != nullptr) return;
         Pause();
@@ -166,6 +172,24 @@ void MapScene::Pickup(Item* it){
     //Deal
     qDebug("picked it up %s",it->getName().toStdString().c_str());
     this->removeItem(it);
+}
+
+void MapScene::giveDeath(Entity* ett){
+    if((Player*)(ett) == Watashi){
+        Pause();
+        moji = new Moji("You Dead!\nPress [X] to respawn",view);
+        moji->show(this);
+        GG = true;
+    }else{
+        if(((Npc*)ett)->heri != nullptr){
+            Entity *ntt = Entity::newEntity(*((Npc*)ett)->heri);
+            this->addItem(ntt);
+            charas.append(ntt);
+            qDebug(ntt->getType().toStdString().c_str());
+        }
+        this->removeItem(ett);
+        delete ett;
+    }
 }
 
 void MapScene::Refresh(){
@@ -226,6 +250,149 @@ void MapScene::Refresh(){
             ett->shiftSpeedY(G);
 
         }();
+        if(ett->getType()=="watashi")
+        {
+            if(Watashi->state==1)
+            {
+                Watashi->setSpeedX(0);
+                Watashi->setSpeedY(0);
+                switch(Watashi->counter)
+                {
+                    case 1:
+                        Watashi->setStatusPic("a");
+                        //修改贴图至攻击
+                        Watashi->counter++;
+                        for(auto it = charas.begin();it != charas.end();)
+                        {
+                            if((*it)->getType()=="npc")
+                                if(Watashi->collidesWithItem(*it))
+                                {
+                                    (*it)->hit();
+                                    if(((Npc*)(*it))->hp<=0){
+                                        giveDeath(*it);
+                                        it = charas.erase(it);
+                                        continue;
+                                    }
+                                }
+                           it++;
+                        }
+                        break;
+                    case 5:
+                        Watashi->state = 2;
+                        Watashi->counter++;
+                        break;
+                    default:
+                        Watashi->counter++;
+                        break;
+                }
+            }
+            else if(Watashi->state==2)
+            {
+                switch(Watashi->counter)
+                {
+                    case 6:
+                        Watashi->setStatusPic("");
+                        //修改贴图至正常行动
+                        Watashi->counter++;
+                        break;
+                    case 10:
+                        Watashi->state=0;
+                        Watashi->counter=0;
+                        break;
+                    default:
+                        Watashi->counter++;
+                        break;
+                }
+            }
+            else if(Watashi->state==3)
+            {
+                Watashi->setSpeedX(0);
+                Watashi->setSpeedY(0);
+                switch(Watashi->counter)
+                {
+                    case 1:
+                        Watashi->setStatusPic("b");
+                        Watashi->counter++;
+                        break;
+                    case 8:
+                        Watashi->state=0;
+                        Watashi->counter=0;
+                        break;
+                    default:
+                        Watashi->counter++;
+                        break;
+                }
+            }
+        }
+        if(ett->getType()=="npc")
+        {
+            Npc* npt = (Npc*)ett;
+            if(npt->state==0)
+            {
+                if(npt->collidesWithItem(Watashi))
+                {
+                    npt->state=-1;
+                    npt->counter=1;
+                }
+            }
+            else if(npt->state==-1)
+            {
+                npt->setSpeedX(0);
+                npt->setSpeedY(0);
+                switch(npt->counter)
+                {
+                    case 1:
+                        npt->counter++;
+                        break;
+                    case 5:
+                        npt->state=1;
+                        npt->counter=1;
+                        break;
+                    default:
+                        npt->counter++;
+                        break;
+                }
+            }
+            else if(npt->state==1)
+            {
+                npt->setSpeedX(0);
+                npt->setSpeedY(0);
+                switch(npt->counter)
+                {
+                    case 1:
+                        npt->setStatusPic("a");
+                        //修改贴图为攻击
+                        if(npt->collidesWithItem(Watashi))
+                        {
+                            (Watashi)->hit();
+                            if((Watashi)->hp<=0)
+                                giveDeath(Watashi);
+//                                ((Player*)(Watashi))->death();
+                        }
+                        npt->counter++;
+                        break;
+                    case 5:
+                        npt->state=0;
+                        npt->counter=0;
+                        break;
+                    default:
+                        npt->counter++;
+                        break;
+                }
+            }
+            else if(npt->state==3)
+            {
+                npt->setSpeedX(0);
+                npt->setSpeedY(0);
+                switch(npt->counter)
+                {
+                    case 1:
+                        npt->setStatusPic("b");
+                        //修改贴图至受击
+                        npt->counter++;
+                }
+            }
+        }
         int tox = ett->x() + ett->getSpeedX();
         tox = max(tox,xmin);
         tox = min(tox,xmax);

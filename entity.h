@@ -92,11 +92,21 @@ protected:
     int Speed_x,Speed_y;
     int acAc_y;
     bool isFloat;
+public:
+    virtual void attack(){}
+    virtual void hit(){}
+    bool onfloor = 1;
 };
 
 class Player : public Entity{
 public:
     Player(const QJsonObject& obj);
+    int hp = 50;
+    int state = 0;//state说明：0 自由移动、攻击 1 正在攻击，不能移动 2 可以移动，不能攻击（攻击之后的贤者时间） 3 受击，不能移动
+    int counter = 0;
+    void attack();
+    void hit();
+    void setStatusPic(QString sta);
 };
 
 class Npc : public Entity{
@@ -105,6 +115,13 @@ public:
     inline QString getName(){return name;}
 private:
     QString name;
+public:
+    int hp = 50;
+    int state = 0;
+    int counter = 0;
+    QJsonObject *heri;
+    void hit();
+    void setStatusPic(QString sta);
 };
 
 class Item : public Entity{

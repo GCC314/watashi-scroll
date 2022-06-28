@@ -10,10 +10,11 @@
 #include <QJsonArray>
 #include <QJsonObject>
 #include <QJsonValue>
+#include <QQueue>
 
 namespace MUSICS{
     void bgmSet(QMediaPlayer *player,QMediaPlaylist *plist,int level);
-    void soundsSet(QMediaPlayer *player,QString sname);
+    void soundsPlay(QString sname);
+    extern QQueue<QMediaPlayer*> squeue;
 }
-
 #endif // MUSICS_H

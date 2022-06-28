@@ -2,7 +2,8 @@
 	{
 		"x" : 200,
 		"y" : 650,
-		"type" : "watashi"
+		"type" : "watashi",
+		"hp" : 80
 	},
 	{
 		"x" : 220,
@@ -13,8 +14,8 @@
 	{
 		"x" : 270,
 		"y" : 485,
-		"type" : "notice",
-		"moji" : "Climb to a higher peak!"
+		"type" : "gate",
+		"to" : 3
 	},
 	{
         "x" : 600,

@@ -2,7 +2,8 @@
 	{
 		"x" : 200,
 		"y" : 650,
-		"type" : "watashi"
+		"type" : "watashi",
+		"hp" : 80
 	},
 	{
 		"x" : 220,

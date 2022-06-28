@@ -60,12 +60,48 @@ void ENTITYS::init(){
 Player::Player(const QJsonObject &obj):Entity(obj){
     QGraphicsPixmapItem::setPixmap(QPixmap::fromImage(ENTITYS::getImgcache(type)));
     QGraphicsPixmapItem::setOffset(-ENTITYS::getImgX(type),-ENTITYS::getImgY(type));
+    hp = obj["hp"].toInt();
+}
+
+void Player::attack()
+{
+    state = 1;
+    counter = 1;
+    //修改贴图：近战攻击
+}
+
+void Player::hit()
+{
+    qDebug("player got hit");
+    state = 3;
+    counter = 1;
+    hp -= 10;
+}
+
+void Player::setStatusPic(QString sta){
+    this->setPixmap(QPixmap::fromImage(ENTITYS::getImgcache(type,sta)));
 }
 
 Npc::Npc(const QJsonObject &obj):Entity(obj){
     name = obj["name"].toString();
     QGraphicsPixmapItem::setPixmap(QPixmap::fromImage(ENTITYS::getImgcache(name)));
     QGraphicsPixmapItem::setOffset(-ENTITYS::getImgX(name),-ENTITYS::getImgY(name));
+    hp = obj["hp"].toInt();
+    if(obj.contains("heritage")){
+        heri = new QJsonObject(obj["heritage"].toObject());
+    }else heri = nullptr;
+}
+
+void Npc::setStatusPic(QString sta){
+    this->setPixmap(QPixmap::fromImage(ENTITYS::getImgcache(name,sta)));
+}
+
+void Npc::hit()
+{
+    qDebug("npc get hit");
+    state = 3;
+    counter = 1;
+    hp -= 20;
 }
 
 Item::Item(const QJsonObject &obj):Entity(obj){
