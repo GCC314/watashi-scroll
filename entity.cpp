@@ -90,6 +90,8 @@ Npc::Npc(const QJsonObject &obj):Entity(obj){
     if(obj.contains("heritage")){
         heri = new QJsonObject(obj["heritage"].toObject());
     }else heri = nullptr;
+    this->setISpeedX(NPC_SPEED);
+    intendtick = 0;
 }
 
 void Npc::setStatusPic(QString sta){

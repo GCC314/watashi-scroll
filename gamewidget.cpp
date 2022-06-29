@@ -20,8 +20,6 @@ void GameWidget::__Run(){
     scene->Start();
 }
 
-const int WATASHI_SPEED = 8;
-
 void GameWidget::keyPressEvent(QKeyEvent *event){
 //    qDebug("key Pressed\n");
     switch(event->key()){

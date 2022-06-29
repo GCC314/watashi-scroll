@@ -74,6 +74,12 @@ public:
     inline void setSpeedX(int v){
         Speed_x = v;
     }
+    inline void setISpeedY(int v){
+        intendSpeed_y = v;
+    }
+    inline void setISpeedX(int v){
+        intendSpeed_x = v;
+    }
     inline int getSpeedY(){
         return Speed_y;
     }
@@ -86,12 +92,24 @@ public:
     inline int getAcY(){
         return acAc_y;
     }
+    inline int& getIntendtick(){
+        return intendtick;
+    }
+    inline void deltaX(int delta){
+        this->setX(this->x() + delta);
+    }
+    inline friend void bounce(Entity* atk,Entity* def,int delta){
+        int coor = def->x() - atk->x();
+        if(coor > 0) def->deltaX(delta);
+        else if(coor < 0) def->deltaX(delta);
+    }
 protected:
     QString type;
     int intendSpeed_x,intendSpeed_y;
     int Speed_x,Speed_y;
     int acAc_y;
     bool isFloat;
+    int intendtick;
 public:
     virtual void attack(){}
     virtual void hit(){}

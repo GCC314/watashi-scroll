@@ -16,6 +16,11 @@ const int xspeed = 5;
 const int yspeed = 15;
 const int INTERVAL = 50;
 
+const int WATASHI_SPEED = 8;
+const int NPC_SPEED = 6;
+const int NPC_TICK = 30;
+const int BOUNCE_BACK = 15;
+
 const QString ROOT_PREFIX = "/home/gcc314/dev/cxsj/watashi-scroll/";
 const QString TEXTURE_PATH_PREFIX = ROOT_PREFIX + "texture/";
 const QString ATTR_PATH_PREFIX = ROOT_PREFIX + "attr/";
