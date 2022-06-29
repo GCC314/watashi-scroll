@@ -44,6 +44,7 @@ class Entity : public QGraphicsPixmapItem
 {
 public:
     Entity(const QJsonObject& obj);
+    Entity(){};
     inline bool getFloat(){
         return isFloat;
     }
@@ -128,6 +129,7 @@ public:
     void setStatusPic(QString sta);
     QGraphicsRectItem *blood;
     void setblood(int x);
+    int dir; // -1 represents left,1 represents right
 };
 
 class Npc : public Entity{
@@ -145,6 +147,16 @@ public:
     void setStatusPic(QString sta);
     QGraphicsRectItem *blood;
     void setblood(int x);
+    int dir; // -1 represents left,1 represents right
+};
+
+class Bullet : public Entity{
+public:
+    Bullet(const int &speed,bool isW,Entity* parent);
+public:
+    int hp;
+    int speed;
+    bool isW; // true represents the shooter is Watashi , false represents the shooter is npc;
 };
 
 class Item : public Entity{

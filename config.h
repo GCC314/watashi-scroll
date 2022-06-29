@@ -20,6 +20,8 @@ const int WATASHI_SPEED = 8;
 const int NPC_SPEED = 6;
 const int NPC_TICK = 30;
 const int BOUNCE_BACK = 15;
+const int BULLET_HP = 8;
+const int BULLET_SPEED = 10;
 
 const QString ROOT_PREFIX = "/home/gcc314/dev/cxsj/watashi-scroll/";
 const QString TEXTURE_PATH_PREFIX = ROOT_PREFIX + "texture/";

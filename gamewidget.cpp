@@ -16,7 +16,8 @@ GameWidget::~GameWidget()
 }
 
 void GameWidget::__Run(){
-    scene->Load(1);
+    //scene->Load(1);
+    scene->Load(3);
     scene->Start();
 }
 
@@ -24,9 +25,11 @@ void GameWidget::keyPressEvent(QKeyEvent *event){
 //    qDebug("key Pressed\n");
     switch(event->key()){
         case Qt::Key_A :
+            ((Player*)scene->getWatashi())->dir = -1;
             scene->getWatashi()->shiftISpeedX(-WATASHI_SPEED);
             break;
         case Qt::Key_D :
+            ((Player*)scene->getWatashi())->dir = 1;
             scene->getWatashi()->shiftISpeedX(WATASHI_SPEED);
             break;
         case Qt::Key_W :
@@ -50,6 +53,9 @@ void GameWidget::keyPressEvent(QKeyEvent *event){
             {
                 ((Player*)(scene->getWatashi()))->attack();
             }
+            break;
+        case Qt::Key_K: // For test
+            scene->Shoot((Player*)(scene->getWatashi()));
             break;
     }
 }

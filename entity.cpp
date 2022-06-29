@@ -64,6 +64,7 @@ Player::Player(const QJsonObject &obj):Entity(obj){
     blood = new QGraphicsRectItem(this);
     blood->setBrush(QBrush(qRgb(255,0,0)));
     blood->setRect(-ENTITYS::getImgX(this->type),-ENTITYS::getImgY(this->type) - 4,20,3);
+    dir = 1;
 }
 
 void Player::setblood(int x){
@@ -102,6 +103,7 @@ Npc::Npc(const QJsonObject &obj):Entity(obj){
     blood = new QGraphicsRectItem(this);
     blood->setBrush(QBrush(qRgb(255,0,0)));
     blood->setRect(-ENTITYS::getImgX(this->name),-ENTITYS::getImgY(this->name) - 4,20,3);
+    dir = 1;
 }
 
 void Npc::setblood(int x){
@@ -167,4 +169,21 @@ Entity* Entity::newEntity(const QJsonObject& obj_,Entity* parent){
         return new Item(obj);
     }
     return new Entity(obj);
+}
+
+Bullet::Bullet(const int &speed,bool isW,Entity* parent){
+    this->setPos(parent->x(),parent->y());
+    qDebug("bullet %f %f",this->x(),this->y());
+    type = "bullet";
+    QGraphicsPixmapItem::setPixmap(QPixmap::fromImage(ENTITYS::getImgcache(type)));
+    QGraphicsPixmapItem::setOffset(-ENTITYS::getImgX(type),-ENTITYS::getImgY(type));
+    QGraphicsPixmapItem::setZValue(18.0);
+    isFloat = true;
+    hp = BULLET_HP;
+    this->speed = speed;
+    this->intendSpeed_x = speed;
+    this->intendSpeed_y = 0;
+    this->Speed_x = speed;
+    this->Speed_y = 0;
+    this->isW = isW;
 }

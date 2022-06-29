@@ -33,6 +33,8 @@ public:
     void giveDeath(Entity* ett);
     void Teleport(int level);
     void Pickup(Item* it);
+    void Shoot(Player* shooter);
+    void Shoot(Npc* shooter);
     Entity* getWatashi(){return Watashi;}
 private:
     QVector<Block*> qtbmap;
@@ -47,6 +49,7 @@ private:
     QMediaPlayer *BGM;
     QMediaPlayer *Sounds;
     QMediaPlaylist *bgmlist;
+    QSet<Entity*> GC;
     bool GG;
     int nowlevel;
 };

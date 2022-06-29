@@ -189,8 +189,23 @@ void MapScene::giveDeath(Entity* ett){
             qDebug(ntt->getType().toStdString().c_str());
         }
         this->removeItem(ett);
-        delete ett;
+        GC.insert(ett);
     }
+}
+
+void MapScene::Shoot(Player* shooter){
+    qDebug("Shoot");
+    Bullet* bt = new Bullet(BULLET_SPEED * shooter->dir,true,shooter);
+    this->addItem(bt);
+    charas.append(bt);
+    qDebug("Shot");
+}
+void MapScene::Shoot(Npc* shooter){
+    qDebug("Shoot");
+    Bullet* bt = new Bullet(BULLET_SPEED * shooter->dir,false,shooter);
+    this->addItem(bt);
+    charas.append(bt);
+    qDebug("Shot");
 }
 
 void MapScene::Refresh(){
@@ -203,15 +218,22 @@ void MapScene::Refresh(){
             it = ItemList.erase(it);
         }else it++;
     }
-    for(auto ett : charas){
-        if(ENTITYS::getEttFloat(ett->getType())) continue;
-
+    for(auto ett_ = charas.begin();ett_ != charas.end();){
+        if(GC.contains(*ett_)){
+            GC.remove(*ett_);
+            delete *ett_;
+            ett_ = charas.erase(ett_);
+            continue;
+        }
+        auto ett = *(ett_);
+        ett_++;
+        if(ett->getType() == "item" || ett->getType() == "gate" || ett->getType() == "notice") continue;
         ett->setSpeedX(ett->getISpeedX());
-        //Y axis move
-        int y0 = ett->y();
-        QGraphicsLineItem bot(ett->x(),y0,ett->x() - ENTITYS::getImgX(ett->getType()),y0);
+        if(ett->getType() != "bullet") [&](){
+            //Y axis move
+            int y0 = ett->y();
+            QGraphicsLineItem bot(ett->x(),y0,ett->x() - ENTITYS::getImgX(ett->getType()),y0);
 
-        [&](){
             // Deal with Y Axis (Using Lambda function to make it clear?)
 
             // 1. on the floor OR block
@@ -226,7 +248,6 @@ void MapScene::Refresh(){
             if(ff){
                 if(ett->getSpeedY() > 0) ett->setSpeedY(0);
                 else ett->setSpeedY(min(ett->getISpeedY(),0));
-//                qDebug("{floor}");
                 return;
             }
             // 2. free but track intersects with floor OR block
@@ -236,21 +257,18 @@ void MapScene::Refresh(){
             if(y0 >= ground){
                 ett->setY(ground);
                 ett->setSpeedY(0);
-//                qDebug("{inter}");
                 return;
             }else if(ett->getSpeedY() >= 0) for(auto blo : qtbmap){
                 if(bot.collidesWithItem(blo,Qt::IntersectsItemShape)){
                     ett->setY(blo->y());
                     ett->setSpeedY(0);
-//                    qDebug("{inter}");
                     return;
                 }
             }
-//            qDebug("{free}");
             // 3. free
             ett->shiftSpeedY(G);
-
         }();
+
         if(ett->getType()=="watashi")
         {
             if(Watashi->state==1)
@@ -265,11 +283,12 @@ void MapScene::Refresh(){
                         Watashi->counter++;
                         for(auto it = charas.begin();it != charas.end();)
                         {
+                            if(GC.contains(*it)) continue;
                             if((*it)->getType()=="npc")
                                 if(Watashi->collidesWithItem(*it))
                                 {
                                     (*it)->hit();
-                                    //bounce(Watashi,*it,BOUNCE_BACK);
+                                    bounce(Watashi,*it,BOUNCE_BACK);
                                     if(((Npc*)(*it))->hp<=0){
                                         giveDeath(*it);
                                         it = charas.erase(it);
@@ -331,6 +350,7 @@ void MapScene::Refresh(){
         {
             Npc* npt = (Npc*)ett;
             int wside = ++npt->getIntendtick() / NPC_TICK;
+            npt->dir = wside & 1 ? -1 : 1;
             npt->setISpeedX(wside & 1 ? -NPC_SPEED : NPC_SPEED);
             if(npt->state==0)
             {
@@ -370,10 +390,9 @@ void MapScene::Refresh(){
                         if(npt->collidesWithItem(Watashi))
                         {
                             (Watashi)->hit();
-                            //bounce(npt,Watashi,BOUNCE_BACK);
+                            bounce(npt,Watashi,BOUNCE_BACK);
                             if((Watashi)->hp<=0)
                                 giveDeath(Watashi);
-//                                ((Player*)(Watashi))->death();
                         }
                         npt->counter++;
                         break;
@@ -396,9 +415,63 @@ void MapScene::Refresh(){
                         npt->setStatusPic("b");
                         //修改贴图至受击
                         npt->counter++;
+                    break;
+                    case 5:
+                        npt->state = 0;
+                        npt->counter = 0;
+                    break;
+                    default:
+                        npt->counter++;
+                    break;
                 }
             }
             npt->setblood(npt->hp);
+        }
+        if(ett->getType() == "bullet"){
+            Bullet* bt = (Bullet*)ett;
+            if(bt->hp-- <= 0){
+                GC.insert(bt);
+                continue;
+            }
+            for(auto it = charas.begin();it != charas.end();it++){
+                if(GC.contains(*it)) continue;
+                if(!bt->collidesWithItem(*it)) continue;
+                if(bt->x() <= xmin || bt->x() >= xmax){
+                    GC.insert(bt);
+                    break;
+                }
+                qDebug("it %s",(*it)->getType().toStdString().c_str());
+                qDebug("it %d",bt->isW);
+                if(bt->isW){
+                    if((*it)->getType() == "npc"){
+                        //hit Npc
+                        (*it)->hit();
+                        bounce(bt,*it,BOUNCE_BACK);
+                        if(((Npc*)(*it))->hp<=0){
+                            giveDeath(*it);
+                            it = charas.erase(it);
+                        }
+                        GC.insert(bt);
+                        break;
+                    }
+                }else{
+                    if((*it)->getType() == "watashi"){
+                        // hit watashi
+                        (Watashi)->hit();
+                        bounce(bt,Watashi,BOUNCE_BACK);
+                        if((Watashi)->hp<=0)
+                            giveDeath(Watashi);
+                        GC.insert(bt);
+                        break;
+                    }
+                }
+            }
+            for(auto it = qtbmap.begin();it != qtbmap.end();it++){
+                if((*it)->collidesWithItem(bt)){
+                    GC.insert(bt);
+                    break;
+                }
+            }
         }
         int tox = ett->x() + ett->getSpeedX();
         tox = max(tox,xmin);
