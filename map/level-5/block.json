@@ -1,0 +1,37 @@
+[
+  {
+    "x": 256,
+    "y": 606,
+    "type": "big_dirt"
+  },
+  {
+    "x": 332,
+    "y": 558,
+    "type": "big_dirt"
+  },
+  {
+    "x": 408,
+    "y": 510,
+    "type": "big_dirt"
+  },
+  {
+    "x": 450,
+    "y": 498,
+    "type": "long_dirt"
+  },
+  {
+    "x": 730,
+    "y": 450,
+    "type": "big_dirt"
+  },
+  {
+    "x": 806,
+    "y": 402,
+    "type": "big_dirt"
+  },
+  {
+    "x": 882,
+    "y": 354,
+    "type": "big_dirt"
+  }
+]

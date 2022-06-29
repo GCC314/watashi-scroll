@@ -36,6 +36,7 @@ public:
     void Shoot(Player* shooter);
     void Shoot(Npc* shooter);
     Entity* getWatashi(){return Watashi;}
+    int nowlevel;
 private:
     QVector<Block*> qtbmap;
     QVector<Entity*> charas;
@@ -51,7 +52,6 @@ private:
     QMediaPlaylist *bgmlist;
     QSet<Entity*> GC;
     bool GG;
-    int nowlevel;
 };
 
 #endif // SCENE_H

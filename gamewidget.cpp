@@ -15,9 +15,13 @@ GameWidget::~GameWidget()
     delete ui;
 }
 
+static bool isRunning__ = false;
+
 void GameWidget::__Run(){
+    if(isRunning__) return;
+    isRunning__ = true;
     //scene->Load(1);
-    scene->Load(3);
+    scene->Load(1);
     scene->Start();
 }
 
@@ -44,6 +48,11 @@ void GameWidget::keyPressEvent(QKeyEvent *event){
         case Qt::Key_X :
             scene->DoX();
             break;
+        case Qt::Key_R :
+            scene->Pause();
+            scene->Clear();
+            scene->Load(scene->nowlevel);
+            break;
         case Qt::Key_Escape:
             delete scene;
             GameWidget::close();
@@ -57,6 +66,9 @@ void GameWidget::keyPressEvent(QKeyEvent *event){
         case Qt::Key_K: // For test
             scene->Shoot((Player*)(scene->getWatashi()));
             break;
+        case Qt::Key_Space:
+            //
+        break;
     }
 }
 

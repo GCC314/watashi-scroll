@@ -1,23 +1,33 @@
 [
 	{
-		"x" : 200,
-		"y" : 650,
-		"type" : "watashi",
-		"hp" : 90
+		"x": 200,
+		"y": 650,
+		"type": "watashi",
+		"hp": 90
 	},
 	{
-		"x" : 300,
-		"y" : 650,
-		"type" : "npc",
-		"name" : "hapi",
-		"hp" : 70,
-		"heritage" :
-		{
-            "x" : 200,
-            "y" : 650,
-            "type" : "gate",
-            "to" : 2,
-            "attached" : true
+		"x": 220,
+		"y": 640,
+		"type": "notice",
+		"moji": "Oh no, Enemy ahead! Press J to attack."
+	},
+	{
+		"x": 300,
+		"y": 650,
+		"type": "npc",
+		"name": "hapi",
+		"hp": 70,
+		"heritage": {
+			"x": 200,
+			"y": 650,
+			"type": "gate",
+			"to": 2
 		}
+	},
+	{
+		"x": 400,
+		"y": 650,
+		"type": "gate",
+		"to": 4
 	}
 ]

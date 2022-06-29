@@ -95,7 +95,7 @@ void MapScene::Load(int level){
     if(Watashi == nullptr) qDebug("Watashi mo nai");
 
     bgmlist = new QMediaPlaylist();
-    MUSICS::bgmSet(BGM,bgmlist,level);
+    MUSICS::bgmSet(BGM,bgmlist,1);
     BGM->play();
 
     tick = new QTimer();
@@ -140,9 +140,8 @@ void MapScene::DoX(){
     moji->clear(this);
     delete moji;
     moji = nullptr;
-    if(GG){
-        Teleport(nowlevel);
-    }else Start();
+    if(GG) Teleport(nowlevel);
+    else Start();
 }
 
 void MapScene::DoZ(){
@@ -176,6 +175,7 @@ void MapScene::Pickup(Item* it){
 }
 
 void MapScene::giveDeath(Entity* ett){
+    qDebug("guo1");
     if((Player*)(ett) == Watashi){
         Pause();
         moji = new Moji("You Dead!\nPress [X] to respawn",view);
@@ -183,13 +183,18 @@ void MapScene::giveDeath(Entity* ett){
         GG = true;
     }else{
         if(((Npc*)ett)->heri != nullptr){
+            qDebug("guo2");
             Entity *ntt = Entity::newEntity(*((Npc*)ett)->heri,ett);
+            qDebug("guo3");
             this->addItem(ntt);
+            qDebug("guo4");
             charas.append(ntt);
+            qDebug("guo5");
             qDebug(ntt->getType().toStdString().c_str());
         }
-        this->removeItem(ett);
-        GC.insert(ett);
+        qDebug("guo6");
+        if(!GC.contains(ett)) GC.insert(ett);
+        qDebug("guo7");
     }
 }
 
@@ -220,6 +225,7 @@ void MapScene::Refresh(){
     }
     for(auto ett_ = charas.begin();ett_ != charas.end();){
         if(GC.contains(*ett_)){
+            this->removeItem(*ett_);
             GC.remove(*ett_);
             delete *ett_;
             ett_ = charas.erase(ett_);
@@ -291,7 +297,7 @@ void MapScene::Refresh(){
                                     bounce(Watashi,*it,BOUNCE_BACK);
                                     if(((Npc*)(*it))->hp<=0){
                                         giveDeath(*it);
-                                        it = charas.erase(it);
+                                        if(!GC.contains(*it)) GC.insert(*it);
                                         continue;
                                     }
                                 }
@@ -449,7 +455,7 @@ void MapScene::Refresh(){
                         bounce(bt,*it,BOUNCE_BACK);
                         if(((Npc*)(*it))->hp<=0){
                             giveDeath(*it);
-                            it = charas.erase(it);
+                            if(!GC.contains(*it)) GC.insert(*it);
                         }
                         GC.insert(bt);
                         break;

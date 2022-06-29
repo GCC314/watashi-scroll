@@ -1,21 +1,21 @@
 [
 	{
-		"x" : 200,
+		"x" : 50,
 		"y" : 650,
 		"type" : "watashi",
 		"hp" : 80
 	},
 	{
-		"x" : 220,
+		"x" : 70,
 		"y" : 640,
 		"type" : "notice",
-		"moji" : "Hello to this world!"
+		"moji": "Press W to jump. Press X to close the notice and try to reach \n the highest platform."
 	},
 	{
 		"x" : 270,
 		"y" : 485,
 		"type" : "notice",
-		"moji" : "Climb to a higher peak!"
+		"moji" : "Congratulations! You have climbed to a higher peak! Now press \n Z to enter the purple gate."
 	},
 	{
         "x" : 300,

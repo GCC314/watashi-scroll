@@ -35,7 +35,7 @@ public:
     void clear(QGraphicsScene *scene);
 private:
     QString moji;
-    QGraphicsSimpleTextItem *qmoji;
+    QGraphicsTextItem *qmoji;
 };
 
 #endif // POPUP_H

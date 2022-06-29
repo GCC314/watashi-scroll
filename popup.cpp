@@ -12,11 +12,12 @@ Moji::Moji(QString moji,QGraphicsView *view):Popup(30,330,view){
     this->moji = moji;
     QGraphicsPixmapItem::setZValue(50.0);
     QGraphicsPixmapItem::setPixmap(QPixmap::fromImage(POPUP::getImgcache("moji")));
-    qmoji = new QGraphicsSimpleTextItem(moji,this);
+    qmoji = new QGraphicsTextItem(moji,this);
     QFont tf;
     tf.setPixelSize(20);
     tf.setFamily("Fira Code");
-    qmoji->setBrush(Qt::white);
+    qmoji->setDefaultTextColor(Qt::white);
+    qmoji->setTextWidth(550);
     qmoji->setFont(tf);
     qmoji->setPos(10,10);
 }

@@ -1,0 +1,92 @@
+[
+  {
+    "x": 50,
+    "y": 650,
+    "type": "watashi",
+    "hp": 80
+  },
+  {
+    "x": 856,
+    "y": 210,
+    "type": "gate",
+    "to": 7
+  },
+  {
+    "x": 744,
+    "y": 600,
+    "type": "npc",
+    "name": "hapi"
+  },
+  {
+    "x": 1000,
+    "y": 600,
+    "type": "npc",
+    "name": "hapi"
+  },
+  {
+    "x": 0,
+    "y": 550,
+    "type": "npc",
+    "name": "hapi"
+  },
+  {
+    "x": 256,
+    "y": 550,
+    "type": "npc",
+    "name": "hapi"
+  },
+  {
+    "x": 744,
+    "y": 500,
+    "type": "npc",
+    "name": "hapi"
+  },
+  {
+    "x": 1000,
+    "y": 500,
+    "type": "npc",
+    "name": "hapi"
+  },
+  {
+    "x": 0,
+    "y": 450,
+    "type": "npc",
+    "name": "hapi"
+  },
+  {
+    "x": 256,
+    "y": 450,
+    "type": "npc",
+    "name": "hapi"
+  },
+  {
+    "x": 744,
+    "y": 400,
+    "type": "npc",
+    "name": "hapi"
+  },
+  {
+    "x": 1000,
+    "y": 400,
+    "type": "npc",
+    "name": "hapi"
+  },
+  {
+    "x": 0,
+    "y": 350,
+    "type": "npc",
+    "name": "hapi"
+  },
+  {
+    "x": 256,
+    "y": 350,
+    "type": "npc",
+    "name": "hapi"
+  },
+  {
+    "x": 620,
+    "y": 290,
+    "type": "npc",
+    "name": "hapi"
+  }
+]
