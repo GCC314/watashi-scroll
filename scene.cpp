@@ -1,7 +1,6 @@
 #include "scene.h"
 #include <QFile>
 
-
 MapScene::MapScene(QWidget *parent)
 {
     this->parent = parent;
@@ -10,6 +9,8 @@ MapScene::MapScene(QWidget *parent)
     BGM->setVolume(20);
     Sounds = new QMediaPlayer;
     Sounds->setVolume(9);
+    qtbmap.clear();
+    charas.clear();
     bgmlist = nullptr;
     GG = false;
 }
@@ -95,7 +96,7 @@ void MapScene::Load(int level){
     if(Watashi == nullptr) qDebug("Watashi mo nai");
 
     bgmlist = new QMediaPlaylist();
-    MUSICS::bgmSet(BGM,bgmlist,1);
+    MUSICS::bgmSet(BGM,bgmlist,"1");
     BGM->play();
 
     tick = new QTimer();
@@ -120,7 +121,14 @@ void MapScene::Pause(){
 void MapScene::Clear(){
     delete view;
     this->clear();
+    foreach(Entity* p,GC){
+        delete p;
+    }
+    GC.clear();
     charas.clear();
+    foreach(Block* p,qtbmap){
+        // delete p;
+    }
     qtbmap.clear();
     ItemList.clear();
     Watashi = nullptr;
@@ -145,7 +153,6 @@ void MapScene::DoX(){
 }
 
 void MapScene::DoZ(){
-    MUSICS::soundsPlay("biu");
     auto ReadNotice = [&](Entity* ett){
         if(moji != nullptr) return;
         Pause();
@@ -155,7 +162,7 @@ void MapScene::DoZ(){
     auto CrossGate = [&](Entity* ett){
         Teleport(((Gate*)ett)->getTo());
     };
-    for(auto ett : charas){
+    foreach(auto ett,charas){
         if(ett->getType() == "notice" && Watashi->collidesWithItem(ett)){
             ReadNotice(ett);
             return;
@@ -169,32 +176,26 @@ void MapScene::DoZ(){
 
 void MapScene::Pickup(Item* it){
     //Deal
+    MUSICS::soundsPlay("ba");
     qDebug("picked it up %s",it->getName().toStdString().c_str());
     if(it->getName() == "healpotion") Watashi->hp += 15;
     this->removeItem(it);
 }
 
 void MapScene::giveDeath(Entity* ett){
-    qDebug("guo1");
     if((Player*)(ett) == Watashi){
         Pause();
-        moji = new Moji("You Dead!\nPress [X] to respawn",view);
+        moji = new Moji("You Dead!\nPress [X] to respawn.",view);
         moji->show(this);
         GG = true;
     }else{
         if(((Npc*)ett)->heri != nullptr){
-            qDebug("guo2");
             Entity *ntt = Entity::newEntity(*((Npc*)ett)->heri,ett);
-            qDebug("guo3");
             this->addItem(ntt);
-            qDebug("guo4");
-            charas.append(ntt);
-            qDebug("guo5");
+            tmp.append(ntt);
             qDebug(ntt->getType().toStdString().c_str());
         }
-        qDebug("guo6");
         if(!GC.contains(ett)) GC.insert(ett);
-        qDebug("guo7");
     }
 }
 
@@ -214,6 +215,8 @@ void MapScene::Shoot(Npc* shooter){
 }
 
 void MapScene::Refresh(){
+    tmp.clear();
+    qDebug("Refresh");
     int ground = LevelInfo["ground"].toInt();
     int xmin = LevelInfo["xmin"].toInt();
     int xmax = LevelInfo["xmax"].toInt();
@@ -223,16 +226,14 @@ void MapScene::Refresh(){
             it = ItemList.erase(it);
         }else it++;
     }
-    for(auto ett_ = charas.begin();ett_ != charas.end();){
+    int cnt = 0;
+    for(auto ett_ = charas.begin();ett_ != charas.end();ett_++){
+        qDebug("chara %d",++cnt);
         if(GC.contains(*ett_)){
-            this->removeItem(*ett_);
-            GC.remove(*ett_);
-            delete *ett_;
-            ett_ = charas.erase(ett_);
             continue;
         }
         auto ett = *(ett_);
-        ett_++;
+        qDebug("%d %s",cnt,ett->getType().toStdString().c_str());
         if(ett->getType() == "item" || ett->getType() == "gate" || ett->getType() == "notice") continue;
         ett->setSpeedX(ett->getISpeedX());
         if(ett->getType() != "bullet") [&](){
@@ -245,7 +246,7 @@ void MapScene::Refresh(){
             // 1. on the floor OR block
             bool ff = false;
             if(y0 >= ground) ff = true;
-            else for(auto blo : qtbmap){
+            else foreach(auto blo,qtbmap){
                 if(bot.collidesWithItem(blo,Qt::IntersectsItemShape)){
                     ff = true;
                     break;
@@ -264,7 +265,7 @@ void MapScene::Refresh(){
                 ett->setY(ground);
                 ett->setSpeedY(0);
                 return;
-            }else if(ett->getSpeedY() >= 0) for(auto blo : qtbmap){
+            }else if(ett->getSpeedY() >= 0) foreach(auto blo,qtbmap){
                 if(bot.collidesWithItem(blo,Qt::IntersectsItemShape)){
                     ett->setY(blo->y());
                     ett->setSpeedY(0);
@@ -294,6 +295,7 @@ void MapScene::Refresh(){
                                 if(Watashi->collidesWithItem(*it))
                                 {
                                     (*it)->hit();
+                                    MUSICS::soundsPlay("biu");
                                     bounce(Watashi,*it,BOUNCE_BACK);
                                     if(((Npc*)(*it))->hp<=0){
                                         giveDeath(*it);
@@ -396,6 +398,7 @@ void MapScene::Refresh(){
                         if(npt->collidesWithItem(Watashi))
                         {
                             (Watashi)->hit();
+                            MUSICS::soundsPlay("biu");
                             bounce(npt,Watashi,BOUNCE_BACK);
                             if((Watashi)->hp<=0)
                                 giveDeath(Watashi);
@@ -441,17 +444,18 @@ void MapScene::Refresh(){
             }
             for(auto it = charas.begin();it != charas.end();it++){
                 if(GC.contains(*it)) continue;
-                if(!bt->collidesWithItem(*it)) continue;
                 if(bt->x() <= xmin || bt->x() >= xmax){
                     GC.insert(bt);
                     break;
                 }
+                if(!bt->collidesWithItem(*it)) continue;
                 qDebug("it %s",(*it)->getType().toStdString().c_str());
                 qDebug("it %d",bt->isW);
                 if(bt->isW){
                     if((*it)->getType() == "npc"){
                         //hit Npc
                         (*it)->hit();
+                        MUSICS::soundsPlay("biu");
                         bounce(bt,*it,BOUNCE_BACK);
                         if(((Npc*)(*it))->hp<=0){
                             giveDeath(*it);
@@ -464,6 +468,7 @@ void MapScene::Refresh(){
                     if((*it)->getType() == "watashi"){
                         // hit watashi
                         (Watashi)->hit();
+                        MUSICS::soundsPlay("biu");
                         bounce(bt,Watashi,BOUNCE_BACK);
                         if((Watashi)->hp<=0)
                             giveDeath(Watashi);
@@ -485,5 +490,15 @@ void MapScene::Refresh(){
         ett->setX(tox);
         ett->setY(ett->y() + ett->getSpeedY());
     }
+    for(auto ett_ = charas.begin();ett_ != charas.end();){
+        if(GC.contains(*ett_)){
+            this->removeItem(*ett_);
+            GC.remove(*ett_);
+            delete *ett_;
+            ett_ = charas.erase(ett_);
+        }else ett_++;
+    }
+    foreach(auto p,tmp) charas.append(p);
     view->centerOn(Watashi);
+    qDebug("Refreshed");
 }

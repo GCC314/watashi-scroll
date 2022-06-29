@@ -22,6 +22,7 @@ int main(int argc, char *argv[])
     GameWidget w;
     Init();
     w.show();
+    w.introBGM();
     //设置按钮
     QPushButton begin, exit;
     begin.setParent(&w);

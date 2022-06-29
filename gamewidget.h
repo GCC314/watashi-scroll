@@ -22,6 +22,7 @@ public:
     ~GameWidget();
 
     void __Run();
+    void introBGM();
 
 private:
     MapScene *scene;

@@ -1,8 +1,7 @@
 #include "musics.h"
-void MUSICS::bgmSet(QMediaPlayer *player,QMediaPlaylist *plist,int level){
+void MUSICS::bgmSet(QMediaPlayer *player,QMediaPlaylist *plist,QString level){
     plist->setPlaybackMode(QMediaPlaylist::Loop);
-    QString levelStr;levelStr.setNum(level);
-    plist->addMedia(QUrl("qrc:/bgm/" + levelStr + ".mp3"));
+    plist->addMedia(QUrl("qrc:/bgm/" + level + ".mp3"));
     player->setPlaylist(plist);
 }
 

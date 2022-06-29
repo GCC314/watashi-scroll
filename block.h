@@ -35,6 +35,7 @@ class Block : public QGraphicsPixmapItem
 {
 public:
     Block(const QJsonObject &obj);
+    ~Block();
 private:
     QString type;
 };

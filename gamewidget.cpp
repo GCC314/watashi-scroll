@@ -1,6 +1,7 @@
 #include "gamewidget.h"
 #include "ui_gamewidget.h"
 #include "config.h"
+#include "musics.h"
 
 GameWidget::GameWidget(QWidget *parent)
     : QWidget(parent)
@@ -16,10 +17,21 @@ GameWidget::~GameWidget()
 }
 
 static bool isRunning__ = false;
+static QMediaPlayer *intro = nullptr;
+static QMediaPlaylist *introl = nullptr;
+
+void GameWidget::introBGM(){
+    intro = new QMediaPlayer();
+    introl = new QMediaPlaylist();
+    MUSICS::bgmSet(intro,introl,"intro");
+    intro->setVolume(25);
+    intro->play();
+}
 
 void GameWidget::__Run(){
     if(isRunning__) return;
     isRunning__ = true;
+    intro->stop();
     //scene->Load(1);
     scene->Load(1);
     scene->Start();
@@ -58,6 +70,7 @@ void GameWidget::keyPressEvent(QKeyEvent *event){
             GameWidget::close();
             break;
         case Qt::Key_J:
+            break;
             if(((Player*)(scene->getWatashi()))->state==0&&scene->getWatashi()->onfloor==1)
             {
                 ((Player*)(scene->getWatashi()))->attack();

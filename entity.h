@@ -121,6 +121,7 @@ public:
 class Player : public Entity{
 public:
     Player(const QJsonObject& obj);
+    ~Player();
     int hp = 50;
     int state = 0;//state说明：0 自由移动、攻击 1 正在攻击，不能移动 2 可以移动，不能攻击（攻击之后的贤者时间） 3 受击，不能移动
     int counter = 0;
@@ -135,6 +136,7 @@ public:
 class Npc : public Entity{
 public:
     Npc(const QJsonObject& obj);
+    ~Npc();
     inline QString getName(){return name;}
 private:
     QString name;
@@ -153,6 +155,7 @@ public:
 class Bullet : public Entity{
 public:
     Bullet(const int &speed,bool isW,Entity* parent);
+    ~Bullet();
 public:
     int hp;
     int speed;
@@ -162,6 +165,7 @@ public:
 class Item : public Entity{
 public:
     Item(const QJsonObject& obj);
+    ~Item();
     inline QString getName(){return name;}
 private:
     QString name;
@@ -170,6 +174,7 @@ private:
 class Notice : public Entity{
 public:
     Notice(const QJsonObject& obj);
+    ~Notice();
     QString getMoji();
 private:
     QString moji;
@@ -178,6 +183,7 @@ private:
 class Gate : public Entity{
 public:
     Gate(const QJsonObject& obj);
+    ~Gate();
     inline int getTo(){return to;}
 private:
     int to;

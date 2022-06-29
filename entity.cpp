@@ -90,6 +90,10 @@ void Player::setStatusPic(QString sta){
     this->setPixmap(QPixmap::fromImage(ENTITYS::getImgcache(type,sta)));
 }
 
+Player::~Player(){
+    delete blood;
+}
+
 Npc::Npc(const QJsonObject &obj):Entity(obj){
     name = obj["name"].toString();
     QGraphicsPixmapItem::setPixmap(QPixmap::fromImage(ENTITYS::getImgcache(name)));
@@ -122,11 +126,22 @@ void Npc::hit()
     hp -= 20;
 }
 
+Npc::~Npc(){
+    qDebug("npc?");
+    delete blood;
+    delete heri;
+    qDebug("npc!");
+}
+
 Item::Item(const QJsonObject &obj):Entity(obj){
     name = obj["name"].toString();
     qDebug("item %s",name.toStdString().c_str());
     QGraphicsPixmapItem::setPixmap(QPixmap::fromImage(ENTITYS::getImgcache(name)));
     QGraphicsPixmapItem::setOffset(-ENTITYS::getImgX(name),-ENTITYS::getImgY(name));
+}
+
+Item::~Item(){
+    //
 }
 
 Notice::Notice(const QJsonObject &obj):Entity(obj){
@@ -136,12 +151,20 @@ Notice::Notice(const QJsonObject &obj):Entity(obj){
     this->setZValue(12.0);
 }
 
+Notice::~Notice(){
+    //
+}
+
 QString Notice::getMoji(){return this->moji;}
 
 Gate::Gate(const QJsonObject &obj):Entity(obj){
     QGraphicsPixmapItem::setPixmap(QPixmap::fromImage(ENTITYS::getImgcache(type)));
     QGraphicsPixmapItem::setOffset(-ENTITYS::getImgX(type),-ENTITYS::getImgY(type));
     this->to = obj["to"].toInt();
+}
+
+Gate::~Gate(){
+    //
 }
 
 Entity* Entity::newEntity(const QJsonObject& obj_,Entity* parent){
@@ -186,4 +209,8 @@ Bullet::Bullet(const int &speed,bool isW,Entity* parent){
     this->Speed_x = speed;
     this->Speed_y = 0;
     this->isW = isW;
+}
+
+Bullet::~Bullet(){
+    qDebug("bullet!");
 }

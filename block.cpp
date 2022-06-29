@@ -16,3 +16,7 @@ Block::Block(const QJsonObject &obj){
 void BLOCKS::init(){
     //
 }
+
+Block::~Block(){
+    //
+}

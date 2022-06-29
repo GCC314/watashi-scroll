@@ -13,7 +13,7 @@
 #include <QQueue>
 
 namespace MUSICS{
-    void bgmSet(QMediaPlayer *player,QMediaPlaylist *plist,int level);
+    void bgmSet(QMediaPlayer *player,QMediaPlaylist *plist,QString level);
     void soundsPlay(QString sname);
     extern QQueue<QMediaPlayer*> squeue;
 }

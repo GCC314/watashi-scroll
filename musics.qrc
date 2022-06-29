@@ -1,10 +1,10 @@
 <RCC>
     <qresource prefix="/bgm">
         <file>1.mp3</file>
-        <file>2.mp3</file>
-        <file>3.mp3</file>
+        <file>intro.mp3</file>
     </qresource>
     <qresource prefix="/sounds">
         <file>biu.mp3</file>
+        <file>ba.mp3</file>
     </qresource>
 </RCC>

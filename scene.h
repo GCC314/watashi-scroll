@@ -51,6 +51,7 @@ private:
     QMediaPlayer *Sounds;
     QMediaPlaylist *bgmlist;
     QSet<Entity*> GC;
+    QVector<Entity*> tmp;
     bool GG;
 };
 
