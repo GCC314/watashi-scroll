@@ -288,7 +288,7 @@ void MapScene::Refresh(){
                         Watashi->setStatusPic("a");
                         //修改贴图至攻击
                         Watashi->counter++;
-                        for(auto it = charas.begin();it != charas.end();)
+                        for(auto it = charas.begin();it != charas.end();it++)
                         {
                             if(GC.contains(*it)) continue;
                             if((*it)->getType()=="npc")
@@ -300,10 +300,9 @@ void MapScene::Refresh(){
                                     if(((Npc*)(*it))->hp<=0){
                                         giveDeath(*it);
                                         if(!GC.contains(*it)) GC.insert(*it);
-                                        continue;
                                     }
+                                    break;
                                 }
-                           it++;
                         }
                         break;
                     case 5:

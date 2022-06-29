@@ -70,7 +70,7 @@ void GameWidget::keyPressEvent(QKeyEvent *event){
             GameWidget::close();
             break;
         case Qt::Key_J:
-            break;
+            // break;
             if(((Player*)(scene->getWatashi()))->state==0&&scene->getWatashi()->onfloor==1)
             {
                 ((Player*)(scene->getWatashi()))->attack();

@@ -7,4 +7,7 @@
         <file>biu.mp3</file>
         <file>ba.mp3</file>
     </qresource>
+    <qresource prefix="/">
+        <file>stylesheet.qss</file>
+    </qresource>
 </RCC>
