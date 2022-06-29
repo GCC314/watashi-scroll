@@ -16,7 +16,8 @@
             "x" : 200,
             "y" : 650,
             "type" : "gate",
-            "to" : 2
+            "to" : 2,
+            "attached" : true
 		}
 	}
 ]

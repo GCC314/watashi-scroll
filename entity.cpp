@@ -142,7 +142,14 @@ Gate::Gate(const QJsonObject &obj):Entity(obj){
     this->to = obj["to"].toInt();
 }
 
-Entity* Entity::newEntity(const QJsonObject& obj){
+Entity* Entity::newEntity(const QJsonObject& obj_,Entity* parent){
+    QJsonObject obj(obj_);
+    if(parent != nullptr && obj["attached"].toBool() == true){
+        obj.remove("x");
+        obj.remove("y");
+        obj.insert("x",parent->x());
+        obj.insert("y",parent->y());
+    }
     QString tp = obj["type"].toString();
     if(tp == "watashi"){
         return new Player(obj);

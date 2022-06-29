@@ -42,7 +42,8 @@ void GameWidget::keyPressEvent(QKeyEvent *event){
             scene->DoX();
             break;
         case Qt::Key_Escape:
-            //
+            delete scene;
+            GameWidget::close();
             break;
         case Qt::Key_J:
             if(((Player*)(scene->getWatashi()))->state==0&&scene->getWatashi()->onfloor==1)

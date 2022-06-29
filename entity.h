@@ -68,7 +68,7 @@ public:
     inline void shiftSpeedX(int delta){
         Speed_x += delta;
     }
-    static Entity* newEntity(const QJsonObject& obj);
+    static Entity* newEntity(const QJsonObject& obj,Entity* parent=nullptr);
     inline void setSpeedY(int v){
         Speed_y = v;
     }

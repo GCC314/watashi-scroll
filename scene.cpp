@@ -171,6 +171,7 @@ void MapScene::DoZ(){
 void MapScene::Pickup(Item* it){
     //Deal
     qDebug("picked it up %s",it->getName().toStdString().c_str());
+    if(it->getName() == "healpotion") Watashi->hp += 15;
     this->removeItem(it);
 }
 
@@ -182,7 +183,7 @@ void MapScene::giveDeath(Entity* ett){
         GG = true;
     }else{
         if(((Npc*)ett)->heri != nullptr){
-            Entity *ntt = Entity::newEntity(*((Npc*)ett)->heri);
+            Entity *ntt = Entity::newEntity(*((Npc*)ett)->heri,ett);
             this->addItem(ntt);
             charas.append(ntt);
             qDebug(ntt->getType().toStdString().c_str());
