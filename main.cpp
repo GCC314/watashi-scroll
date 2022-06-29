@@ -36,14 +36,12 @@ int main(int argc, char *argv[])
     exit.show();
     GameWidget::connect(&exit, &QPushButton::clicked, &w, &GameWidget::close);
 
-
     QLabel lab;
     lab.setParent(&w);
-    lab.move(175, 100);
-    lab.setAlignment(Qt::AlignCenter);
+    lab.move(95, 100);
     lab.setText("WATASHI PARKOUR");
-    QFont font("Microsoft JhengHei",15);
-    lab.setStyleSheet("QLabel{font:30px;color:red;background-color:rgb(f9,f9,f9);}");
+    QFont font("Microsoft JhengHei",30, 87);
+    lab.setStyleSheet("color:#f87e2c;");
     lab.setFont(font);
     lab.show();
     return a.exec();

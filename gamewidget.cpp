@@ -9,6 +9,7 @@ GameWidget::GameWidget(QWidget *parent)
 {
     ui->setupUi(this);
     scene = new MapScene(this);
+    setWindowIcon(QIcon(":/ICON.png"));
 }
 
 GameWidget::~GameWidget()
@@ -49,7 +50,7 @@ void GameWidget::keyPressEvent(QKeyEvent *event){
             scene->getWatashi()->shiftISpeedX(WATASHI_SPEED);
             break;
         case Qt::Key_W :
-            scene->getWatashi()->shiftISpeedY(-WATASHI_SPEED);
+            scene->getWatashi()->shiftISpeedY(-WATASHI_SPEED*1.4);
             break;
         case Qt::Key_S :
             scene->getWatashi()->shiftISpeedY(WATASHI_SPEED);
@@ -60,10 +61,9 @@ void GameWidget::keyPressEvent(QKeyEvent *event){
         case Qt::Key_X :
             scene->DoX();
             break;
-        case Qt::Key_R :
-            scene->Pause();
-            scene->Clear();
-            scene->Load(scene->nowlevel);
+        case Qt::Key_Shift:
+            scene->getWatashi()->shiftISpeedY(-20);
+            ((Player*)scene->getWatashi())->hp -= 5;
             break;
         case Qt::Key_Escape:
             delete scene;
@@ -95,10 +95,15 @@ void GameWidget::keyReleaseEvent(QKeyEvent *event){
             scene->getWatashi()->shiftISpeedX(-WATASHI_SPEED);
             break;
         case Qt::Key_W :
-            scene->getWatashi()->shiftISpeedY(WATASHI_SPEED);
+            scene->getWatashi()->shiftISpeedY(WATASHI_SPEED*1.4);
             break;
         case Qt::Key_S :
             scene->getWatashi()->shiftISpeedY(-WATASHI_SPEED);
             break;
     }
+}
+static bool isbpainted = false;
+void GameWidget::paintEvent(QPaintEvent* event){
+    QPainter painter(this);
+    painter.drawPixmap(0,0,QPixmap(":/menu.png"));
 }

@@ -103,7 +103,7 @@ public:
     inline friend void bounce(Entity* atk,Entity* def,int delta){
         int coor = def->x() - atk->x();
         if(coor > 0) def->deltaX(delta);
-        else if(coor < 0) def->deltaX(delta);
+        else if(coor < 0) def->deltaX(-delta);
     }
 protected:
     QString type;
@@ -150,6 +150,7 @@ public:
     QGraphicsRectItem *blood;
     void setblood(int x);
     int dir; // -1 represents left,1 represents right
+    int myspeed;
 };
 
 class Bullet : public Entity{

@@ -1,4 +1,7 @@
 #include "entity.h"
+#include <QtGlobal>
+#include <QTime>
+#include <cmath>
 
 QHash<QString,QImage*> ENTITYS::IMAGE_CACHE;
 QHash<QString,bool> ENTITYS::ENTITY_ISFLOAT;
@@ -20,6 +23,7 @@ Entity::Entity(const QJsonObject &obj){
 }
 
 void ENTITYS::init(){
+    qsrand(QTime(0,0,0).secsTo(QTime::currentTime()));
     [&](){
         // Get float.json
         QFile cfgFile;
@@ -102,7 +106,8 @@ Npc::Npc(const QJsonObject &obj):Entity(obj){
     if(obj.contains("heritage")){
         heri = new QJsonObject(obj["heritage"].toObject());
     }else heri = nullptr;
-    this->setISpeedX(NPC_SPEED);
+    myspeed = (int)floor(((rand() % 30) + 71.0) / 100 * NPC_SPEED);
+    this->setISpeedX(myspeed);
     intendtick = 0;
     blood = new QGraphicsRectItem(this);
     blood->setBrush(QBrush(qRgb(255,0,0)));

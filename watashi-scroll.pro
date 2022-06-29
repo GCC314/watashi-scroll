@@ -35,6 +35,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 RESOURCES += \
-    musics.qrc
+    rc.qrc
 
 QT += multimedia

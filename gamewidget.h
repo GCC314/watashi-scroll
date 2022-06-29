@@ -23,6 +23,7 @@ public:
 
     void __Run();
     void introBGM();
+    void paintEvent(QPaintEvent* event);
 
 private:
     MapScene *scene;

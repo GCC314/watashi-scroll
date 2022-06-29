@@ -9,5 +9,7 @@
     </qresource>
     <qresource prefix="/">
         <file>stylesheet.qss</file>
+        <file>ICON.png</file>
+        <file>menu.png</file>
     </qresource>
 </RCC>

@@ -247,11 +247,13 @@ void MapScene::Refresh(){
             bool ff = false;
             if(y0 >= ground) ff = true;
             else foreach(auto blo,qtbmap){
-                if(bot.collidesWithItem(blo,Qt::IntersectsItemShape)){
+                if(bot.collidesWithItem(blo,Qt::IntersectsItemShape) && ett->getSpeedY() >= 0){
                     ff = true;
                     break;
                 }
             }
+            if(ff)ett->onfloor=1;
+            else ett->onfloor=0;
             if(ff){
                 if(ett->getSpeedY() > 0) ett->setSpeedY(0);
                 else ett->setSpeedY(min(ett->getISpeedY(),0));
@@ -272,20 +274,57 @@ void MapScene::Refresh(){
                     return;
                 }
             }
+
             // 3. free
             ett->shiftSpeedY(G);
+
         }();
 
         if(ett->getType()=="watashi")
         {
+            QString dirstr;
+            QString idstr;
+            if(Watashi->dir==-1)dirstr.setNum(0);
+            else dirstr.setNum(1);
+            if(Watashi->state==0)
+            {
+                Watashi->counter++;
+                if(Watashi->onfloor)
+                {
+                    if(Watashi->getSpeedX()==0)
+                    {
+                        idstr.setNum(Watashi->counter%6+1);
+                        Watashi->setStatusPic("idle"+dirstr+idstr);
+                    }
+                    else
+                    {
+                        idstr.setNum(Watashi->counter%8+1);
+                        Watashi->setStatusPic("run"+dirstr+idstr);
+                    }
+                }
+                else
+                {
+                    if(Watashi->getSpeedY()>=0)
+                    {
+                        idstr.setNum(Watashi->counter%3+1);
+                        Watashi->setStatusPic("fall"+dirstr+idstr);
+                    }
+                    else
+                    {
+                        idstr.setNum(Watashi->counter%3+1);
+                        Watashi->setStatusPic("jump"+dirstr+idstr);
+                    }
+                }
+            }
             if(Watashi->state==1)
             {
                 Watashi->setSpeedX(0);
                 Watashi->setSpeedY(0);
                 switch(Watashi->counter)
                 {
-                    case 1:
-                        Watashi->setStatusPic("a");
+                    case 4:
+                    idstr.setNum(4);
+                        Watashi->setStatusPic("attack"+dirstr+idstr);
                         //修改贴图至攻击
                         Watashi->counter++;
                         for(auto it = charas.begin();it != charas.end();it++)
@@ -305,56 +344,69 @@ void MapScene::Refresh(){
                                 }
                         }
                         break;
-                    case 5:
-                        Watashi->state = 2;
-                        Watashi->counter++;
-                        break;
-                    default:
-                        Watashi->counter++;
-                        break;
-                }
-            }
-            else if(Watashi->state==2)
-            {
-                switch(Watashi->counter)
-                {
                     case 6:
-                        Watashi->setStatusPic("");
-                        //修改贴图至正常行动
-                        Watashi->counter++;
-                        break;
-                    case 10:
-                        Watashi->state=0;
-                        Watashi->counter=0;
+                        idstr.setNum(6);
+                        Watashi->setStatusPic("attack"+dirstr+idstr);
+                        Watashi->state = 0;
+                        Watashi->counter = 0;
                         break;
                     default:
+                        idstr.setNum(Watashi->counter);
+                        Watashi->setStatusPic("attack"+dirstr+idstr);
                         Watashi->counter++;
                         break;
                 }
             }
+//            else if(Watashi->state==2)
+//            {
+//                switch(Watashi->counter)
+//                {
+//                    case 6:
+//                        Watashi->setStatusPic("");
+//                        //修改贴图至正常行动
+//                        Watashi->counter++;
+//                        break;
+//                    case 10:
+//                        Watashi->state=0;
+//                        Watashi->counter=0;
+//                        break;
+//                    default:
+//                        Watashi->counter++;
+//                        break;
+//                }
+//            }
             else if(Watashi->state==3)
             {
                 Watashi->setSpeedX(0);
                 Watashi->setSpeedY(0);
-                switch(Watashi->counter)
+                idstr.setNum(Watashi->counter);
+                Watashi->setStatusPic("hurt"+dirstr+idstr);
+                Watashi->counter++;
+                if(Watashi->counter==5)
                 {
-                    case 1:
-                        Watashi->setStatusPic("b");
-                        Watashi->counter++;
-                        break;
-                    case 8:
-                        Watashi->state=0;
-                        Watashi->counter=0;
-                        break;
-                    default:
-                        Watashi->counter++;
-                        break;
+                    Watashi->state=0;
+                    Watashi->counter=0;
                 }
+//                switch(Watashi->counter)
+//                {
+//                    case 1:
+//                        Watashi->setStatusPic("b");
+//                        Watashi->counter++;
+//                        break;
+//                    case 4:
+
+//                        break;
+//                    default:
+//                        Watashi->counter++;
+//                        break;
+//                }
             }
             Watashi->setblood(Watashi->hp);
         }
         if(ett->getType()=="npc")
         {
+            QString dirstr;
+            QString idstr;
             Npc* npt = (Npc*)ett;
             int wside = ++npt->getIntendtick() / NPC_TICK;
             npt->dir = wside & 1 ? -1 : 1;
