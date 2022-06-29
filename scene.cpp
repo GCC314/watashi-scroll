@@ -268,7 +268,7 @@ void MapScene::Refresh(){
                                 if(Watashi->collidesWithItem(*it))
                                 {
                                     (*it)->hit();
-                                    bounce((*it),Watashi,BOUNCE_BACK);
+                                    //bounce(Watashi,*it,BOUNCE_BACK);
                                     if(((Npc*)(*it))->hp<=0){
                                         giveDeath(*it);
                                         it = charas.erase(it);
@@ -324,13 +324,13 @@ void MapScene::Refresh(){
                         break;
                 }
             }
+            Watashi->setblood(Watashi->hp);
         }
         if(ett->getType()=="npc")
         {
             Npc* npt = (Npc*)ett;
-            if(++npt->getIntendtick() % 20 == 0){
-                npt->setISpeedX(-npt->getISpeedX());
-            }
+            int wside = ++npt->getIntendtick() / NPC_TICK;
+            npt->setISpeedX(wside & 1 ? -NPC_SPEED : NPC_SPEED);
             if(npt->state==0)
             {
                 if(npt->collidesWithItem(Watashi))
@@ -369,7 +369,7 @@ void MapScene::Refresh(){
                         if(npt->collidesWithItem(Watashi))
                         {
                             (Watashi)->hit();
-                            bounce(npt,Watashi,BOUNCE_BACK);
+                            //bounce(npt,Watashi,BOUNCE_BACK);
                             if((Watashi)->hp<=0)
                                 giveDeath(Watashi);
 //                                ((Player*)(Watashi))->death();
@@ -397,6 +397,7 @@ void MapScene::Refresh(){
                         npt->counter++;
                 }
             }
+            npt->setblood(npt->hp);
         }
         int tox = ett->x() + ett->getSpeedX();
         tox = max(tox,xmin);

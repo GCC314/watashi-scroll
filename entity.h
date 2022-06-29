@@ -9,6 +9,7 @@
 #include <QJsonArray>
 #include <QJsonObject>
 #include <QJsonValue>
+#include <QBrush>
 
 namespace ENTITYS{
     extern QHash<QString,QImage*> IMAGE_CACHE;
@@ -125,6 +126,8 @@ public:
     void attack();
     void hit();
     void setStatusPic(QString sta);
+    QGraphicsRectItem *blood;
+    void setblood(int x);
 };
 
 class Npc : public Entity{
@@ -140,6 +143,8 @@ public:
     QJsonObject *heri;
     void hit();
     void setStatusPic(QString sta);
+    QGraphicsRectItem *blood;
+    void setblood(int x);
 };
 
 class Item : public Entity{

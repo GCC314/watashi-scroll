@@ -61,6 +61,13 @@ Player::Player(const QJsonObject &obj):Entity(obj){
     QGraphicsPixmapItem::setPixmap(QPixmap::fromImage(ENTITYS::getImgcache(type)));
     QGraphicsPixmapItem::setOffset(-ENTITYS::getImgX(type),-ENTITYS::getImgY(type));
     hp = obj["hp"].toInt();
+    blood = new QGraphicsRectItem(this);
+    blood->setBrush(QBrush(qRgb(255,0,0)));
+    blood->setRect(-ENTITYS::getImgX(this->type),-ENTITYS::getImgY(this->type) - 4,20,3);
+}
+
+void Player::setblood(int x){
+    blood->setRect(-ENTITYS::getImgX(this->type),-ENTITYS::getImgY(this->type) - 4,x * 0.2,3);
 }
 
 void Player::attack()
@@ -92,6 +99,13 @@ Npc::Npc(const QJsonObject &obj):Entity(obj){
     }else heri = nullptr;
     this->setISpeedX(NPC_SPEED);
     intendtick = 0;
+    blood = new QGraphicsRectItem(this);
+    blood->setBrush(QBrush(qRgb(255,0,0)));
+    blood->setRect(-ENTITYS::getImgX(this->name),-ENTITYS::getImgY(this->name) - 4,20,3);
+}
+
+void Npc::setblood(int x){
+    blood->setRect(-ENTITYS::getImgX(this->name),-ENTITYS::getImgY(this->name) - 4,x * 0.2,3);
 }
 
 void Npc::setStatusPic(QString sta){
