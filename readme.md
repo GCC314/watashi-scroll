@@ -2,8 +2,6 @@
 
 ## —— TLE队 程设大作业报告
 
-`工学院21级 陈国赐 朱乐豪 王超艺 `
-
 ## 零、预览
 
 <img src="./screenshot/1.png" alt="2" style="zoom: 67%;" />
