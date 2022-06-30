@@ -6,27 +6,27 @@
 
 ## 零、预览
 
-<img src="/home/gcc314/dev/cs/1.png" alt="2" style="zoom: 67%;" />
+<img src="./screenshot/1.png" alt="2" style="zoom: 67%;" />
 
 <center>开始菜单</center>
 
-<img src="/home/gcc314/dev/cs/2.png" alt="2" style="zoom: 67%;" />
+<img src="./screenshot/2.png" alt="2" style="zoom: 67%;" />
 
 <center> 游戏内跳跃 和 传送门 和 血瓶 </center>
 
-<img src="/home/gcc314/dev/cs/3.png" alt="3" style="zoom:67%;" />
+<img src="./screenshot/3.png" alt="3" style="zoom:67%;" />
 
 <center>近战攻击</center>
 
-<img src="/home/gcc314/dev/cs/6.png" alt="6" style="zoom:67%;" />
+<img src="./screenshot/6.png" alt="6" style="zoom:67%;" />
 
 <center> 告示牌 及 交互 </center>
 
-<img src="/home/gcc314/dev/cs/4.png" alt="4" style="zoom:67%;" />
+<img src="./screenshot/4.png" alt="4" style="zoom:67%;" />
 
 <center> 地图 和 怪物 </center>
 
-<img src="/home/gcc314/dev/cs/5.png" alt="5" style="zoom:67%;" />
+<img src="./screenshot/5.png" alt="5" style="zoom:67%;" />
 
 <center> 结束界面 </center>
 
