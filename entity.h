@@ -123,7 +123,7 @@ public:
     Player(const QJsonObject& obj);
     ~Player();
     int hp = 50;
-    int state = 0;//state说明：0 自由移动、攻击 1 正在攻击，不能移动 2 可以移动，不能攻击（攻击之后的贤者时间） 3 受击，不能移动
+    int state = 0;
     int counter = 0;
     void attack();
     void hit();
@@ -151,6 +151,7 @@ public:
     void setblood(int x);
     int dir; // -1 represents left,1 represents right
     int myspeed;
+    int myt;
 };
 
 class Bullet : public Entity{

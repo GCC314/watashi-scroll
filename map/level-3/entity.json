@@ -1,19 +1,19 @@
 [
 	{
 		"x": 200,
-		"y": 650,
+		"y": 738,
 		"type": "watashi",
 		"hp": 90
 	},
 	{
 		"x": 220,
-		"y": 640,
+		"y": 738,
 		"type": "notice",
 		"moji": "Oh no, Enemy ahead! Press J to attack."
 	},
 	{
 		"x": 300,
-		"y": 650,
+		"y": 738,
 		"type": "npc",
 		"name": "hapi",
 		"hp": 70,
@@ -26,7 +26,7 @@
 	},
 	{
 		"x": 400,
-		"y": 650,
+		"y": 738,
 		"type": "gate",
 		"to": 4
 	}

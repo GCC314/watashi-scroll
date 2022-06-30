@@ -403,16 +403,21 @@ void MapScene::Refresh(){
             }
             Watashi->setblood(Watashi->hp);
         }
-        if(ett->getType()=="npc")
+        else if(ett->getType()=="npc")
         {
             QString dirstr;
             QString idstr;
             Npc* npt = (Npc*)ett;
-            int wside = ++npt->getIntendtick() / NPC_TICK;
+            int wside = ++npt->getIntendtick() / npt->myt;
             npt->dir = wside & 1 ? -1 : 1;
             npt->setISpeedX(wside & 1 ? -NPC_SPEED : NPC_SPEED);
+            if(npt->dir==-1)dirstr.setNum(0);
+            else dirstr.setNum(1);
             if(npt->state==0)
             {
+                idstr.setNum(npt->counter%6+1);
+                npt->setStatusPic("walk"+dirstr+idstr);
+                npt->counter++;
                 if(npt->collidesWithItem(Watashi))
                 {
                     npt->state=-1;
@@ -423,29 +428,37 @@ void MapScene::Refresh(){
             {
                 npt->setSpeedX(0);
                 npt->setSpeedY(0);
-                switch(npt->counter)
+                idstr.setNum(npt->counter);
+                npt->setStatusPic("idle"+dirstr+idstr);
+                npt->counter++;
+                if(npt->counter==7)
                 {
-                    case 1:
-                        npt->counter++;
-                        break;
-                    case 5:
-                        npt->state=1;
-                        npt->counter=1;
-                        break;
-                    default:
-                        npt->counter++;
-                        break;
+                    npt->state=1;
+                    npt->counter=1;
                 }
+//                switch(npt->counter)
+//                {
+//                    case 1:
+//                        npt->counter++;
+//                        break;
+//                    case 5:
+//                        npt->state=1;
+//                        npt->counter=1;
+//                        break;
+//                    default:
+//                        npt->counter++;
+//                        break;
+//                }
             }
             else if(npt->state==1)
             {
                 npt->setSpeedX(0);
                 npt->setSpeedY(0);
+                idstr.setNum(npt->counter);
+                npt->setStatusPic("attack"+dirstr+idstr);
                 switch(npt->counter)
                 {
-                    case 1:
-                        npt->setStatusPic("a");
-                        //修改贴图为攻击
+                    case 4:
                         if(npt->collidesWithItem(Watashi))
                         {
                             (Watashi)->hit();
@@ -456,34 +469,42 @@ void MapScene::Refresh(){
                         }
                         npt->counter++;
                         break;
-                    case 5:
-                        npt->state=0;
-                        npt->counter=0;
-                        break;
                     default:
                         npt->counter++;
                         break;
+                }
+                if(npt->counter==7)
+                {
+                    npt->state=0;
+                    npt->counter=0;
                 }
             }
             else if(npt->state==3)
             {
                 npt->setSpeedX(0);
                 npt->setSpeedY(0);
-                switch(npt->counter)
+                idstr.setNum(npt->counter);
+                npt->setStatusPic("hurt"+dirstr+idstr);
+                npt->counter++;
+                if(npt->counter==4)
                 {
-                    case 1:
-                        npt->setStatusPic("b");
-                        //修改贴图至受击
-                        npt->counter++;
-                    break;
-                    case 5:
-                        npt->state = 0;
-                        npt->counter = 0;
-                    break;
-                    default:
-                        npt->counter++;
-                    break;
+                    npt->state = 0;
+                    npt->counter = 0;
                 }
+//                switch(npt->counter)
+//                {
+//                    case 1:
+//                        npt->setStatusPic("b");
+//                        //修改贴图至受击
+//                        npt->counter++;
+//                    break;
+//                    case 5:
+
+//                    break;
+//                    default:
+//                        npt->counter++;
+//                    break;
+//                }
             }
             npt->setblood(npt->hp);
         }

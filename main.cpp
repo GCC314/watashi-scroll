@@ -38,10 +38,10 @@ int main(int argc, char *argv[])
 
     QLabel lab;
     lab.setParent(&w);
-    lab.move(95, 100);
+    lab.move(70, 100);
     lab.setText("WATASHI PARKOUR");
-    QFont font("Microsoft JhengHei",30, 87);
-    lab.setStyleSheet("color:#f87e2c;");
+    QFont font("Microsoft JhengHei",25, 87);
+    lab.setStyleSheet("color:#4b5665;");
     lab.setFont(font);
     lab.show();
     return a.exec();

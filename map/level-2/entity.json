@@ -1,25 +1,25 @@
 [
 	{
 		"x" : 200,
-		"y" : 650,
+		"y" : 738,
 		"type" : "watashi",
 		"hp" : 80
 	},
 	{
 		"x" : 220,
-		"y" : 640,
+		"y" : 738,
 		"type" : "notice",
 		"moji" : "Reach the healpotion to heal yourself."
 	},
 	{
 		"x" : 270,
-		"y" : 485,
+		"y" : 588,
 		"type" : "gate",
 		"to" : 3
 	},
 	{
         "x" : 600,
-        "y" : 640,
+        "y" : 733,
         "type" : "item",
         "name" : "healpotion"
 	}

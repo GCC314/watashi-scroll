@@ -79,7 +79,7 @@ void Player::attack()
 {
     state = 1;
     counter = 1;
-    //修改贴图：近战攻击
+
 }
 
 void Player::hit()
@@ -107,6 +107,7 @@ Npc::Npc(const QJsonObject &obj):Entity(obj){
         heri = new QJsonObject(obj["heritage"].toObject());
     }else heri = nullptr;
     myspeed = (int)floor(((rand() % 30) + 71.0) / 100 * NPC_SPEED);
+    myt = (int)floor(((rand() % 30) + 71.0) / 100 * NPC_TICK);
     this->setISpeedX(myspeed);
     intendtick = 0;
     blood = new QGraphicsRectItem(this);

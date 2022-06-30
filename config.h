@@ -23,7 +23,7 @@ const int BOUNCE_BACK = 15;
 const int BULLET_HP = 8;
 const int BULLET_SPEED = 10;
 
-const QString ROOT_PREFIX = "/home/gcc314/dev/cxsj/watashi-scroll/";
+const QString ROOT_PREFIX = ":/";
 const QString TEXTURE_PATH_PREFIX = ROOT_PREFIX + "texture/";
 const QString ATTR_PATH_PREFIX = ROOT_PREFIX + "attr/";
 const QString MAP_DATA_PATH_PREFIX = ROOT_PREFIX + "map/level-";

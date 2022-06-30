@@ -1,70 +1,77 @@
 [
   {
-    "x": 50,
-    "y": 650,
+    "x": 165,
+    "y": 480,
     "type": "watashi",
     "hp": 80
   },
   {
-    "x": 985,
-    "y": 354,
+    "x": 645,
+    "y": 360,
     "type": "gate",
     "to": 6
   },
   {
-    "x": 280,
-    "y": 650,
+    "x": 477,
+    "y": 610,
+    "type": "npc",
+    "name": "hapi",
+    "hp": 70
+  },
+  {
+    "x": 480,
+    "y": 610,
+    "type": "npc",
+    "name": "hapi",
+    "hp": 70
+  },
+  {
+    "x": 100,
+    "y": 738,
+    "type": "npc",
+    "name": "hapi",
+    "hp": 70
+  },
+  {
+    "x": 200,
+    "y": 738,
+    "type": "npc",
+    "name": "hapi",
+    "hp": 70
+  },
+  {
+    "x": 300,
+    "y": 738,
     "type": "npc",
     "name": "hapi",
     "hp": 70
   },
   {
     "x": 400,
-    "y": 650,
-    "type": "npc",
-    "name": "hapi",
-    "hp": 70
-  },
-  {
-    "x": 520,
-    "y": 650,
-    "type": "npc",
-    "name": "hapi",
-    "hp": 70
-  },
-  {
-    "x": 640,
-    "y": 650,
-    "type": "npc",
-    "name": "hapi",
-    "hp": 70
-  },
-  {
-    "x": 760,
-    "y": 650,
-    "type": "npc",
-    "name": "hapi",
-    "hp": 70
-  },
-  {
-    "x": 880,
-    "y": 650,
+    "y": 738,
     "type": "npc",
     "name": "hapi",
     "hp": 70
   },
   {
     "x": 500,
-    "y": 498,
+    "y": 738,
     "type": "npc",
     "name": "hapi",
     "hp": 70
   },
   {
     "x": 600,
-    "y": 498,
+    "y": 738,
     "type": "npc",
     "name": "hapi",
+    "hp": 70
+  },
+  {
+    "x": 671,
+    "y": 550,
+    "type": "item",
+    "name": "healpotion",
     "hp": 70
   }
 ]

@@ -38,8 +38,9 @@ void GameWidget::__Run(){
     scene->Start();
 }
 
+bool strengthened = 0;
 void GameWidget::keyPressEvent(QKeyEvent *event){
-//    qDebug("key Pressed\n");
+//    qDebug("key Pressed/n");
     switch(event->key()){
         case Qt::Key_A :
             ((Player*)scene->getWatashi())->dir = -1;
@@ -50,7 +51,7 @@ void GameWidget::keyPressEvent(QKeyEvent *event){
             scene->getWatashi()->shiftISpeedX(WATASHI_SPEED);
             break;
         case Qt::Key_W :
-            scene->getWatashi()->shiftISpeedY(-WATASHI_SPEED*1.4);
+            scene->getWatashi()->shiftISpeedY(-WATASHI_SPEED*1.25);
             break;
         case Qt::Key_S :
             scene->getWatashi()->shiftISpeedY(WATASHI_SPEED);
@@ -62,8 +63,9 @@ void GameWidget::keyPressEvent(QKeyEvent *event){
             scene->DoX();
             break;
         case Qt::Key_Shift:
-            scene->getWatashi()->shiftISpeedY(-20);
-            ((Player*)scene->getWatashi())->hp -= 5;
+            scene->getWatashi()->shiftISpeedY(-16);
+            if(scene->getWatashi()->onfloor)
+            ((Player*)scene->getWatashi())->hp -= 20;
             break;
         case Qt::Key_Escape:
             delete scene;
@@ -79,14 +81,15 @@ void GameWidget::keyPressEvent(QKeyEvent *event){
         case Qt::Key_K: // For test
             scene->Shoot((Player*)(scene->getWatashi()));
             break;
-        case Qt::Key_Space:
-            //
+        case Qt::Key_T:
+            scene->getWatashi()->setISpeedX(0);
+            scene->getWatashi()->setISpeedY(0);
         break;
     }
 }
 
 void GameWidget::keyReleaseEvent(QKeyEvent *event){
-//    qDebug("key Released\n");
+//    qDebug("key Released/n");
     switch(event->key()){
         case Qt::Key_A :
             scene->getWatashi()->shiftISpeedX(WATASHI_SPEED);
@@ -95,14 +98,16 @@ void GameWidget::keyReleaseEvent(QKeyEvent *event){
             scene->getWatashi()->shiftISpeedX(-WATASHI_SPEED);
             break;
         case Qt::Key_W :
-            scene->getWatashi()->shiftISpeedY(WATASHI_SPEED*1.4);
+            scene->getWatashi()->shiftISpeedY(WATASHI_SPEED*1.25);
             break;
         case Qt::Key_S :
             scene->getWatashi()->shiftISpeedY(-WATASHI_SPEED);
             break;
+        case Qt::Key_Shift:
+            scene->getWatashi()->shiftISpeedY(16);
+            break;
     }
 }
-static bool isbpainted = false;
 void GameWidget::paintEvent(QPaintEvent* event){
     QPainter painter(this);
     painter.drawPixmap(0,0,QPixmap(":/menu.png"));

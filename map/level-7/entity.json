@@ -1,67 +1,67 @@
 [
   {
     "x": 20,
-    "y": 100,
+    "y": 188,
     "type": "watashi",
     "hp": 80
   },
   {
     "x": 100,
-    "y": 100,
+    "y": 188,
     "type": "npc",
     "name": "hapi"
   },
   {
     "x": 330,
-    "y": 200,
+    "y": 288,
     "type": "npc",
     "name": "hapi"
   },
   {
     "x": 690,
-    "y": 300,
+    "y": 388,
     "type": "npc",
     "name": "hapi"
   },
   {
     "x": 690,
-    "y": 500,
+    "y": 588,
     "type": "npc",
     "name": "hapi"
   },
   {
     "x": 320,
-    "y": 400,
+    "y": 488,
     "type": "npc",
     "name": "hapi"
   },
   {
-    "x": 990,
-    "y": 650,
+    "x": 900,
+    "y": 738,
     "type": "gate",
     "to": 8
   },
   {
     "x": 50,
-    "y": 650,
+    "y": 738,
     "type": "npc",
     "name": "hapi"
   },
   {
     "x": 150,
-    "y": 650,
+    "y": 738,
     "type": "npc",
     "name": "hapi"
   },
   {
     "x": 250,
-    "y": 650,
+    "y": 738,
     "type": "npc",
     "name": "hapi"
   },
   {
     "x": 350,
-    "y": 650,
+    "y": 738,
     "type": "npc",
     "name": "hapi"
   }
